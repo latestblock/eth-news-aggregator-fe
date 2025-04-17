@@ -1,0 +1,45 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("NEXT_PUBLIC_DB_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model NewsDigest {
+    id          String       @id @default(uuid())
+    date        DateTime     @default(now())
+    status      DigestStatus @default(PENDING)
+    createdAt   DateTime     @default(now())
+    reviewedAt  DateTime?
+    adminMsgId  String?
+    chatId      String?
+    newsItems   NewsItem[]
+    publishedOn Json?        @default("{}")
+}
+
+model NewsItem {
+    id           String       @id @default(uuid())
+    headline     String
+    source       String?
+    date         DateTime?
+    summary      String
+    link         String?
+    category     String?
+    createdAt    DateTime     @default(now())
+    approvedAt   DateTime?
+    publishedAt  DateTime?
+    newsDigestId String?
+    status       DigestStatus @default(PENDING)
+    adminMsgId   String?
+    chatId       String?
+    feedUrl      String?
+    newsDigest   NewsDigest?  @relation(fields: [newsDigestId], references: [id])
+}
+
+enum DigestStatus {
+    PENDING
+    APPROVED
+    REJECTED
+}
