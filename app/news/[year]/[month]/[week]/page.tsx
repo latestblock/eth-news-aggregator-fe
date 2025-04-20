@@ -1,6 +1,6 @@
 import { Sidebar } from "@/app/components/sidebar";
 import { WeeklyNewsContent } from "@/app/components/weekly-news-content";
-import { getDateRangeForWeek, formatDateRange } from "@/app/utils/dateUtils";
+import { formatDateRange } from "@/app/utils/dateUtils";
 import {
   fetchAvailableDateRanges,
   fetchNewsItemsForWeek,
@@ -13,11 +13,13 @@ export default async function NewsPage({
   params: { year: string; month: string; week: string };
 }) {
   const year = parseInt(params.year);
-  const month = parseInt(params.month);
+  const month = parseInt(params.month) - 1;
   const week = parseInt(params.week);
 
-  // Get date range for the requested week
-  const { startDay, endDay } = getDateRangeForWeek(year, month, week);
+  // Calculate start and end dates for the week
+  const firstDayOfMonth = new Date(year, month, 1);
+  const startDay = new Date(year, month, (week - 1) * 7 + 1);
+  const endDay = new Date(year, month, week * 7);
 
   // Fetch data in parallel
   const [newsItems, newsGroups] = await Promise.all([
@@ -26,7 +28,6 @@ export default async function NewsPage({
   ]);
   const groupedItems = groupByCategory(newsItems);
   const dateRangeTitle = formatDateRange(startDay, endDay);
-
   return (
     <>
       <Sidebar newsGroups={newsGroups} />

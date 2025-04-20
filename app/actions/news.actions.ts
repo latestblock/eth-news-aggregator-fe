@@ -93,21 +93,26 @@ export async function fetchAvailableDateRanges() {
  * Fetch news items for a specific week
  */
 export async function fetchNewsItemsForWeek(startDay: Date, endDay: Date) {
-  const dbNewsItems = await prisma.newsItem.findMany({
-    where: {
-      date: {
-        gte: startDay,
-        lte: endDay,
+  try {
+    const dbNewsItems = await prisma.newsItem.findMany({
+      where: {
+        date: {
+          gte: startDay,
+          lte: endDay,
+        },
+        status: "APPROVED",
       },
-      status: "APPROVED",
-    },
-    include: {
-      Category: true,
-    },
-    orderBy: {
-      date: "desc",
-    },
-  });
+      include: {
+        Category: true,
+      },
+      orderBy: {
+        date: "desc",
+      },
+    });
 
-  return mapPrismaNewsItemsToComponentNewsItems(dbNewsItems);
+    return mapPrismaNewsItemsToComponentNewsItems(dbNewsItems);
+  } catch (error) {
+    console.error("Error fetching news items for week:", error);
+    return [];
+  }
 }
