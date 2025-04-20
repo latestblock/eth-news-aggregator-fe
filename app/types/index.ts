@@ -1,12 +1,19 @@
 export interface NewsItem {
   id: string;
-  title: string;
-  description: string;
-  externalLink: string;
-  date: string;
-  week: number;
-  month: number;
-  year: number;
+  headline: string;
+  source: string;
+  date: Date;
+  summary: string;
+  link: string;
+  category: string;
+  createdAt: Date;
+  approvedAt: Date | null;
+  publishedAt: Date | null;
+  newsDigestId: string;
+  status: "APPROVED" | "PENDING" | "REJECTED";
+  adminMsgId: string | null;
+  chatId: string | null;
+  feedUrl: string;
 }
 
 export interface NewsGroup {
