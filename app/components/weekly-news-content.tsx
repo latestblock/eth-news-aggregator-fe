@@ -9,7 +9,7 @@ type WeeklyNewsContentProps = {
 export const WeeklyNewsContent = (props: WeeklyNewsContentProps) => {
   const { dateRangeTitle, groupedItems } = props;
   return (
-    <div className="flex-1">
+    <div className="w-full">
       <h1 className="text-2xl font-bold mb-6 px-6 pt-6">
         Ethereum News: {dateRangeTitle}
       </h1>

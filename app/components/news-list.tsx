@@ -28,7 +28,7 @@ export function NewsList({ items }: NewsListProps) {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 px-6 py-4 dark:bg-neutral-900">
+    <div className=" bg-neutral-50 px-6 py-4 dark:bg-neutral-900">
       <div className="mx-auto max-w-3xl">
         <div className="mb-4 flex items-center">
           <Calendar className="mr-2 h-4 w-4 text-neutral-400" />

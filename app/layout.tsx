@@ -26,7 +26,7 @@ export default function RootLayout({
             </h1>
           </div>
         </header>
-        <main className="flex min-h-screen pt-16">{children}</main>
+        <main className="w-full flex pt-16">{children}</main>
       </body>
     </html>
   );
