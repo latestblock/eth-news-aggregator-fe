@@ -1,38 +1,36 @@
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { NewsItem, NewsDigest } from "@prisma/client";
-import { DigestStatus } from "@prisma/client";
-import { NewsList } from "./components/news-list";
 
-async function getApprovedDigests(): Promise<NewsDigest[]> {
-  const digests = await prisma.newsDigest.findMany({
+export default async function Home() {
+  const latestNewsItem = await prisma.newsItem.findFirst({
     where: {
-      status: "PENDING",
-    },
-    include: {
-      newsItems: true,
+      date: {
+        not: null,
+      },
+      status: "APPROVED",
     },
     orderBy: {
       date: "desc",
     },
   });
-  return digests;
-}
 
-export default async function Home() {
-  const digests = await getApprovedDigests();
+  if (!latestNewsItem || !latestNewsItem.date) {
+    return (
+      <div className="text-2xl font-bold mb-6 px-6 pt-6">
+        <h1 className="text-2xl font-bold mb-6 px-6 pt-6">
+          Latest Ethereum News
+        </h1>
+        <p>No news found</p>
+      </div>
+    );
+  }
 
-  // Redirect to the latest news (you'll need to implement the logic to determine the latest date)
-  // redirect("/news/2024/4/1");
+  // Calculate year, month, and week from the latest news item
+  const date = new Date(latestNewsItem.date);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const dayOfMonth = date.getDate();
+  const week = Math.ceil(dayOfMonth / 7);
 
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6 px-6 pt-6">
-        Latest Ethereum News
-      </h1>
-      {digests.map((digest: any) => (
-        <NewsList key={digest?.id} items={digest?.newsItems} />
-      ))}
-    </div>
-  );
+  redirect(`/news/${year}/${month}/${week}`);
 }
