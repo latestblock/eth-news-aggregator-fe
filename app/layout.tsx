@@ -1,13 +1,13 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { Newspaper } from 'lucide-react';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Newspaper } from "lucide-react";
+import "./globals.css";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Ethereum Weekly News Archive',
-  description: 'Browse past and current Ethereum news updates',
+  title: "Ethereum Weekly News Archive",
+  description: "Browse past and current Ethereum news updates",
 };
 
 export default function RootLayout({
@@ -26,9 +26,7 @@ export default function RootLayout({
             </h1>
           </div>
         </header>
-        <main className="flex min-h-screen pt-16">
-          {children}
-        </main>
+        <main className="flex min-h-screen pt-16">{children}</main>
       </body>
     </html>
   );
