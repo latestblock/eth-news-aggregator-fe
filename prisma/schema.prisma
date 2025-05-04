@@ -17,6 +17,7 @@ model NewsDigest {
     chatId      String?
     newsItems   NewsItem[]
     publishedOn Json?        @default("{}")
+    chain       CHAIN?
 }
 
 model Category {
@@ -25,6 +26,7 @@ model Category {
     createdAt DateTime   @default(now())
     updatedAt DateTime   @updatedAt
     newsItems NewsItem[]
+    chain     CHAIN?
 }
 
 model NewsItem {
@@ -46,10 +48,15 @@ model NewsItem {
     feedUrl      String?
     newsDigest   NewsDigest?  @relation(fields: [newsDigestId], references: [id])
     Category     Category?    @relation(fields: [categoryId], references: [id])
+    chain        CHAIN?
 }
 
 enum DigestStatus {
     PENDING
     APPROVED
     REJECTED
+}
+
+enum CHAIN {
+    ETHEREUM
 }

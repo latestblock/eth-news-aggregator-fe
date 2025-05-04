@@ -39,8 +39,14 @@ export interface NewsGroup {
   }[];
 }
 
+export enum Chain {
+  ETHEREUM = "ETHEREUM",
+  SOLANA = "SOLANA",
+  BITCOIN = "BITCOIN",
+}
+
 export interface ChainOption {
-  id: string;
+  id: Chain;
   name: string;
   logo: React.ReactNode;
 }
