@@ -1,5 +1,5 @@
-import { ChevronDown, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ChevronDown, ChevronRight, Calendar } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { WeekItem } from "./week-item";
 import { NewsGroup } from "@/app/types";
 
@@ -28,22 +28,30 @@ export function MonthItem({
 }: MonthItemProps) {
   return (
     <div key={yearMonth}>
-      <Button
-        variant="ghost"
-        className="w-full justify-start rounded px-2 py-1.5 text-left text-xs font-normal text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
+      <button
         onClick={() => onToggle(yearMonth)}
+        className="flex items-center w-full p-2 text-sm hover:bg-accent/40 rounded-lg text-left transition-all duration-300 group"
       >
-        {isExpanded ? (
-          <ChevronDown className="mr-1.5 h-3 w-3 text-neutral-500" />
-        ) : (
-          <ChevronRight className="mr-1.5 h-3 w-3 text-neutral-500" />
-        )}
-        {new Date(year, month - 1).toLocaleString("default", {
-          month: "long",
-        })}
-      </Button>
+        <span className="text-muted-foreground group-hover:text-primary transition-colors duration-300">
+          {isExpanded ? (
+            <ChevronDown className="h-3.5 w-3.5 mr-1.5" />
+          ) : (
+            <ChevronRight className="h-3.5 w-3.5 mr-1.5" />
+          )}
+        </span>
+        <Calendar
+          color="#5873A7"
+          className="h-3.5 w-3.5 mr-1.5 text-gradient group-hover:opacity-100 transition-all duration-300"
+        />
+        <span className="group-hover:text-primary transition-colors duration-300">
+          {new Date(year, month - 1).toLocaleString("default", {
+            month: "long",
+          })}
+        </span>
+      </button>
+
       {isExpanded && (
-        <div className="space-y-0.5 py-0.5">
+        <div className="pl-8 space-y-1 mt-1 animate-in slide-in-from-left-2 duration-200">
           {months
             .find((m) => m.month === month)
             ?.weeks.map(({ week }) => (
