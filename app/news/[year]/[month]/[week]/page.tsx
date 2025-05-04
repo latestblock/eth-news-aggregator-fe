@@ -6,6 +6,7 @@ import {
   fetchNewsItemsForWeek,
 } from "@/app/actions/news.actions";
 import { groupByCategory } from "@/app/utils/newsUtils";
+import { Chain } from "@/app/types";
 
 export default async function NewsPage({
   params,
@@ -23,8 +24,8 @@ export default async function NewsPage({
 
   // Fetch data in parallel
   const [newsItems, newsGroups] = await Promise.all([
-    fetchNewsItemsForWeek(startDay, endDay),
-    fetchAvailableDateRanges(),
+    fetchNewsItemsForWeek(startDay, endDay, Chain.ETHEREUM),
+    fetchAvailableDateRanges(Chain.ETHEREUM),
   ]);
   const groupedItems = groupByCategory(newsItems);
   const dateRangeTitle = formatDateRange(startDay, endDay);
