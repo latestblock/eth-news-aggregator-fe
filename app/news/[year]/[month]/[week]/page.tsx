@@ -29,12 +29,12 @@ export default async function NewsPage({
   const groupedItems = groupByCategory(newsItems);
   const dateRangeTitle = formatDateRange(startDay, endDay);
   return (
-    <>
+    <div className="w-fit mx-4 bg-light-panel shadow-2xl rounded-xl flex border border-border/60">
       <Sidebar newsGroups={newsGroups} />
       <WeeklyNewsContent
         dateRangeTitle={dateRangeTitle}
         groupedItems={groupedItems}
       />
-    </>
+    </div>
   );
 }

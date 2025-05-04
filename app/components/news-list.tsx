@@ -1,12 +1,13 @@
 "use client";
 
-import { ExternalLink, Share2, Calendar } from "lucide-react";
+import React from "react";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  ExternalLink,
+  Share2,
+  Calendar,
+  Twitter,
+  MessageCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { NewsItem } from "../types";
@@ -27,12 +28,39 @@ export function NewsList({ items }: NewsListProps) {
     );
   };
 
+  const shareToTelegram = (item: NewsItem) => {
+    const text = item.headline;
+    const url = window.location.href;
+    window.open(
+      `https://t.me/share/url?url=${encodeURIComponent(
+        url
+      )}&text=${encodeURIComponent(text)}`,
+      "_blank"
+    );
+  };
+
+  const handleNativeShare = async (item: NewsItem) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: item.headline,
+          text: `Check out this blockchain news: ${item.headline}`,
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.log("Error sharing:", err);
+      }
+    } else {
+      shareNews(item);
+    }
+  };
+
   return (
-    <div className=" bg-neutral-50 px-6 py-4 dark:bg-neutral-900">
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-4 flex items-center">
-          <Calendar className="mr-2 h-4 w-4 text-neutral-400" />
-          <p className="text-xs text-neutral-500 dark:text-neutral-400">
+    <div className="bg-light-panel px-6 py-8">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-6 flex items-center">
+          <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">
             {items[0] &&
               new Date(items[0].date).toLocaleDateString("en-US", {
                 year: "numeric",
@@ -41,49 +69,72 @@ export function NewsList({ items }: NewsListProps) {
               })}
           </p>
         </div>
-        <div className="space-y-3">
-          {items.map((item) => (
-            <Card
+
+        <div className="grid gap-6">
+          {items.map((item, index) => (
+            <div
               key={item.id}
-              className="border border-neutral-200/75 bg-white shadow-none transition hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700"
+              className="group glass-card rounded-xl p-6 transition-all duration-500 hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:-translate-y-1 animate-in fade-in slide-in-from-bottom-2"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              <Accordion type="single" collapsible>
-                <AccordionItem value={item.id} className="border-none">
-                  <AccordionTrigger className="px-4 py-3 text-left hover:no-underline [&[data-state=open]>div]:text-emerald-600 dark:[&[data-state=open]>div]:text-emerald-400">
-                    <div className="text-sm font-medium leading-tight text-neutral-800 dark:text-neutral-200">
-                      {item.headline}
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="border-t border-neutral-100 px-4 pb-3 pt-2 dark:border-neutral-800">
-                      <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-400">
-                        {item.summary}
-                      </p>
-                      <div className="mt-3 flex items-center space-x-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-7 rounded border border-neutral-200 px-2.5 text-xs font-normal text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900 dark:border-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
-                          onClick={() => window.open(item.link, "_blank")}
-                        >
-                          <ExternalLink className="mr-1.5 h-3 w-3" />
-                          Read More
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-7 rounded border border-neutral-200 px-2.5 text-xs font-normal text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900 dark:border-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
-                          onClick={() => shareNews(item)}
-                        >
-                          <Share2 className="mr-1.5 h-3 w-3" />
-                          Share
-                        </Button>
-                      </div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </Card>
+              <h3 className="text-lg font-medium mb-4 group-hover:text-primary transition-colors duration-300">
+                {item.headline}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                {item.summary}
+              </p>
+
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center text-xs text-muted-foreground">
+                  <span>Source: </span>
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-1 flex items-center text-primary/80 hover:text-primary transition-colors duration-300 group/link"
+                  >
+                    {new URL(item.link).hostname.replace("www.", "")}
+                    <ExternalLink className="ml-1 h-3 w-3 transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                  </a>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors duration-300"
+                    onClick={() => shareNews(item)}
+                  >
+                    <Twitter className="h-4 w-4 mr-1" />
+                    <span className="sr-only md:not-sr-only md:inline text-xs">
+                      Twitter
+                    </span>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors duration-300"
+                    onClick={() => shareToTelegram(item)}
+                  >
+                    <MessageCircle className="h-4 w-4 mr-1" />
+                    <span className="sr-only md:not-sr-only md:inline text-xs">
+                      Telegram
+                    </span>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors duration-300"
+                    onClick={() => handleNativeShare(item)}
+                  >
+                    <Share2 className="h-4 w-4 mr-1" />
+                    <span className="sr-only md:not-sr-only md:inline text-xs">
+                      Share
+                    </span>
+                  </Button>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
