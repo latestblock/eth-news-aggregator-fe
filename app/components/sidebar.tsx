@@ -52,7 +52,7 @@ export function Sidebar({ newsGroups }: SidebarProps) {
   };
 
   return (
-    <div className="w-64 border-r border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
+    <div className="w-64 rounded-xl bg-light-panel">
       <ScrollArea className="h-[calc(100vh-4rem)]">
         <div className="px-2 py-3">
           {newsGroups.map(({ year, months }) => (

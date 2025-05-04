@@ -2,73 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --background: 220 30% 98%;
+    --foreground: 220 40% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 220 40% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --popover-foreground: 220 40% 3.9%;
+    --primary: 220 47% 40%;
+    --primary-foreground: 220 40% 98%;
+    --secondary: 220 30% 92%;
+    --secondary-foreground: 220 40% 3.9%;
+    --muted: 220 30% 92%;
+    --muted-foreground: 220 35% 40%;
+    --accent: 220 30% 92%;
+    --accent-foreground: 220 40% 3.9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+    --border: 220 30% 90%;
+    --input: 220 30% 90%;
+    --ring: 220 47% 40%;
+    --radius: 1rem;
+
+    /* Custom application colors */
+    --light-panel: 220 30% 98%;
+
+    /* Network-specific colors */
+    --network-ethereum: 265 50% 60%;
+    --network-solana: 150 50% 50%;
+    --network-bitcoin: 32 95% 55%;
   }
+
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 220 50% 3%;
+    --foreground: 220 40% 98%;
+    --card: 220 50% 3%;
+    --card-foreground: 220 40% 98%;
+    --popover: 220 50% 3%;
+    --popover-foreground: 220 40% 98%;
+    --primary: 220 47% 60%;
+    --primary-foreground: 220 40% 98%;
+    --secondary: 220 50% 7%;
+    --secondary-foreground: 220 40% 98%;
+    --muted: 220 50% 7%;
+    --muted-foreground: 220 40% 60%;
+    --accent: 220 50% 7%;
+    --accent-foreground: 220 40% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --destructive-foreground: 220 40% 98%;
+    --border: 220 50% 7%;
+    --input: 220 50% 7%;
+    --ring: 220 47% 60%;
+
+    /* Custom application colors */
+    --light-panel: 220 25% 10%;
+
+    /* Network-specific colors - darker variants */
+    --network-ethereum: 265 40% 40%;
+    --network-solana: 150 40% 35%;
+    --network-bitcoin: 32 85% 45%;
   }
 }
 
@@ -77,6 +70,125 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground hide-scrollbar;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  html {
+    @apply hide-scrollbar;
+  }
+}
+
+@layer utilities {
+  .glass-effect {
+    @apply bg-background/60 backdrop-blur-lg border border-border/40 shadow-[0_8px_32px_rgba(0,0,0,0.06)];
+  }
+
+  .glass-card {
+    @apply bg-card/40 backdrop-blur-lg border border-border/40 shadow-[0_8px_32px_rgba(0,0,0,0.06)];
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-br from-primary via-primary/90 to-primary/70 bg-clip-text text-transparent;
+  }
+
+  /* Hide scrollbar across browsers */
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Network-specific gradients */
+  .network-gradient-ethereum {
+    background: radial-gradient(
+        circle at top right,
+        hsla(var(--network-ethereum) / 0.15),
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at bottom left,
+        hsla(var(--network-ethereum) / 0.1),
+        transparent 50%
+      );
+  }
+
+  .network-gradient-solana {
+    background: radial-gradient(
+        circle at top right,
+        hsla(var(--network-solana) / 0.15),
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at bottom left,
+        hsla(var(--network-solana) / 0.1),
+        transparent 50%
+      );
+  }
+
+  .network-gradient-bitcoin {
+    background: radial-gradient(
+        circle at top right,
+        hsla(var(--network-bitcoin) / 0.15),
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at bottom left,
+        hsla(var(--network-bitcoin) / 0.1),
+        transparent 50%
+      );
+  }
+}
+
+.mesh-gradient {
+  background-color: hsla(var(--background));
+  background-image: radial-gradient(
+      at 40% 20%,
+      hsla(var(--secondary) / 0.3) 0px,
+      transparent 50%
+    ),
+    radial-gradient(
+      at 80% 0%,
+      hsla(var(--secondary) / 0.3) 0px,
+      transparent 50%
+    ),
+    radial-gradient(
+      at 0% 50%,
+      hsla(var(--secondary) / 0.3) 0px,
+      transparent 50%
+    ),
+    radial-gradient(
+      at 80% 50%,
+      hsla(var(--secondary) / 0.3) 0px,
+      transparent 50%
+    ),
+    radial-gradient(
+      at 0% 100%,
+      hsla(var(--secondary) / 0.3) 0px,
+      transparent 50%
+    ),
+    radial-gradient(
+      at 80% 100%,
+      hsla(var(--secondary) / 0.3) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 0% 0%, hsla(var(--secondary) / 0.3) 0px, transparent 50%);
 }
