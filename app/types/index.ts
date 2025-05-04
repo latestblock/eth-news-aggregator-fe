@@ -38,3 +38,9 @@ export interface NewsGroup {
     }[];
   }[];
 }
+
+export interface ChainOption {
+  id: string;
+  name: string;
+  logo: React.ReactNode;
+}
