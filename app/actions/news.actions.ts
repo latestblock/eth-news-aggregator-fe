@@ -1,15 +1,19 @@
 import prisma from "@/lib/prisma";
 import { mapPrismaNewsItemsToComponentNewsItems } from "@/app/utils/newsUtils";
+import { Chain } from "../types";
 
 /**
  * Fetch available date ranges for news items
  */
-export async function fetchAvailableDateRanges() {
+export async function fetchAvailableDateRanges(chain: Chain.ETHEREUM) {
   const newsItems = await prisma.newsItem.findMany({
     where: {
       status: "APPROVED",
       date: {
         not: null,
+      },
+      chain: {
+        equals: chain,
       },
     },
     select: {
@@ -92,7 +96,11 @@ export async function fetchAvailableDateRanges() {
 /**
  * Fetch news items for a specific week
  */
-export async function fetchNewsItemsForWeek(startDay: Date, endDay: Date) {
+export async function fetchNewsItemsForWeek(
+  startDay: Date,
+  endDay: Date,
+  chain: Chain.ETHEREUM
+) {
   try {
     const dbNewsItems = await prisma.newsItem.findMany({
       where: {
@@ -101,6 +109,9 @@ export async function fetchNewsItemsForWeek(startDay: Date, endDay: Date) {
           lte: endDay,
         },
         status: "APPROVED",
+        chain: {
+          equals: chain,
+        },
       },
       include: {
         Category: true,
