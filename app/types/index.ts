@@ -48,6 +48,7 @@ export enum Chain {
 export interface ChainOption {
   id: Chain;
   name: string;
+  shortName: string;
   logo: React.ReactNode;
   disabled?: boolean;
 }

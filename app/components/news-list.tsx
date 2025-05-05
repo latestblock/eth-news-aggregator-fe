@@ -56,11 +56,11 @@ export function NewsList({ items }: NewsListProps) {
   };
 
   return (
-    <div className="bg-light-panel px-6 py-8">
+    <div className="bg-light-panel px-3 sm:px-4 md:px-6 py-4 md:py-8">
       <div className="mx-auto max-w-4xl">
-        <div className="mb-6 flex items-center">
-          <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">
+        <div className="mb-4 md:mb-6 flex items-center">
+          <Calendar className="mr-2 h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
+          <p className="text-xs md:text-sm text-muted-foreground">
             {items[0] &&
               new Date(items[0].date).toLocaleDateString("en-US", {
                 year: "numeric",
@@ -70,21 +70,21 @@ export function NewsList({ items }: NewsListProps) {
           </p>
         </div>
 
-        <div className="grid gap-6">
+        <div className="grid gap-4 md:gap-6">
           {items.map((item, index) => (
             <div
               key={item.id}
-              className="group glass-card rounded-xl p-6 transition-all duration-500 hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:-translate-y-1 animate-in fade-in slide-in-from-bottom-2"
+              className="group glass-card rounded-xl p-3 sm:p-4 md:p-6 transition-all duration-500 hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:-translate-y-1 animate-in fade-in slide-in-from-bottom-2"
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              <h3 className="text-lg font-medium mb-4 group-hover:text-primary transition-colors duration-300">
+              <h3 className="text-base md:text-lg font-medium mb-2 md:mb-4 group-hover:text-primary transition-colors duration-300">
                 {item.headline}
               </h3>
-              <p className="text-muted-foreground leading-relaxed mb-4">
+              <p className="text-sm text-muted-foreground leading-relaxed mb-3 md:mb-4">
                 {item.summary}
               </p>
 
-              <div className="flex items-center justify-between mt-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-2 md:mt-4">
                 <div className="flex items-center text-xs text-muted-foreground">
                   <span>Source: </span>
                   <a
@@ -98,14 +98,14 @@ export function NewsList({ items }: NewsListProps) {
                   </a>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 md:gap-2">
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors duration-300"
+                    className="h-8 w-8 md:h-9 md:w-auto px-1 md:px-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors duration-300"
                     onClick={() => shareNews(item)}
                   >
-                    <Twitter className="h-4 w-4 mr-1" />
+                    <Twitter className="h-3 w-3 md:h-4 md:w-4 md:mr-1" />
                     <span className="sr-only md:not-sr-only md:inline text-xs">
                       Twitter
                     </span>
@@ -113,10 +113,10 @@ export function NewsList({ items }: NewsListProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors duration-300"
+                    className="h-8 w-8 md:h-9 md:w-auto px-1 md:px-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors duration-300"
                     onClick={() => shareToTelegram(item)}
                   >
-                    <MessageCircle className="h-4 w-4 mr-1" />
+                    <MessageCircle className="h-3 w-3 md:h-4 md:w-4 md:mr-1" />
                     <span className="sr-only md:not-sr-only md:inline text-xs">
                       Telegram
                     </span>
@@ -124,10 +124,10 @@ export function NewsList({ items }: NewsListProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors duration-300"
+                    className="h-8 w-8 md:h-9 md:w-auto px-1 md:px-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors duration-300"
                     onClick={() => handleNativeShare(item)}
                   >
-                    <Share2 className="h-4 w-4 mr-1" />
+                    <Share2 className="h-3 w-3 md:h-4 md:w-4 md:mr-1" />
                     <span className="sr-only md:not-sr-only md:inline text-xs">
                       Share
                     </span>
