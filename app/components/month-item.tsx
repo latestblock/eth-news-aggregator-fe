@@ -1,7 +1,7 @@
 import { ChevronDown, ChevronRight, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { WeekItem } from "./week-item";
-import { NewsGroup } from "@/app/types";
+import { NewsGroup, Chain } from "@/app/types";
 
 type MonthData = NewsGroup["months"][number];
 
@@ -14,6 +14,7 @@ interface MonthItemProps {
   months: MonthData[];
   pathname: string;
   router: any;
+  chainId?: Chain;
 }
 
 export function MonthItem({
@@ -25,6 +26,7 @@ export function MonthItem({
   months,
   pathname,
   router,
+  chainId = Chain.ETHEREUM,
 }: MonthItemProps) {
   return (
     <div key={yearMonth}>
@@ -62,6 +64,7 @@ export function MonthItem({
                 week={week}
                 pathname={pathname}
                 router={router}
+                chainId={chainId}
               />
             ))}
         </div>

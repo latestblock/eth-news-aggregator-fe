@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MonthItem } from "./month-item";
-import { NewsGroup } from "@/app/types";
+import { NewsGroup, Chain } from "@/app/types";
 
 type MonthData = NewsGroup["months"][number];
 
@@ -15,6 +15,7 @@ interface YearItemProps {
   toggleMonth: (yearMonth: string) => void;
   pathname: string;
   router: any;
+  chainId?: Chain;
 }
 
 export function YearItem({
@@ -26,6 +27,7 @@ export function YearItem({
   toggleMonth,
   pathname,
   router,
+  chainId = Chain.ETHEREUM,
 }: YearItemProps) {
   return (
     <div className="border-b border-border/40 pb-2">
@@ -60,6 +62,7 @@ export function YearItem({
                 months={months}
                 pathname={pathname}
                 router={router}
+                chainId={chainId}
               />
             );
           })}

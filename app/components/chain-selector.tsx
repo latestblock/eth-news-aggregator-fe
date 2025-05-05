@@ -28,7 +28,8 @@ export default function ChainSelector({
   const activeChain =
     chains.find((chain) => chain.id === currentChain) || chains[0];
 
-  const handleChainChange = (chainId: string) => {
+  const handleChainChange = (chainId: string, disabled: boolean) => {
+    if (disabled) return; // Don't navigate if chain is disabled
     router.push(`/${chainId}`);
   };
 
@@ -60,17 +61,26 @@ export default function ChainSelector({
           <DropdownMenuItem
             key={chain.id}
             className={cn(
-              "flex items-center gap-2 cursor-pointer transition-all duration-300",
+              "flex items-center gap-2 transition-all duration-300",
               chain.id === currentChain
                 ? "bg-primary/5 dark:bg-primary/10 font-medium"
-                : "hover:bg-accent/50"
+                : "hover:bg-accent/50",
+              chain.disabled
+                ? "opacity-50 cursor-not-allowed"
+                : "cursor-pointer"
             )}
-            onClick={() => handleChainChange(chain.id)}
+            onClick={() => handleChainChange(chain.id, !!chain.disabled)}
+            disabled={!!chain.disabled}
           >
             <span className="p-1 rounded-full bg-background/50">
               {chain.logo}
             </span>
             <span>{chain.name}</span>
+            {chain.disabled && (
+              <span className="ml-auto text-[10px] text-muted-foreground">
+                (Coming soon)
+              </span>
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

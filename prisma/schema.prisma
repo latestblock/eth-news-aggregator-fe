@@ -59,4 +59,6 @@ enum DigestStatus {
 
 enum CHAIN {
     ETHEREUM
+    SOLANA
+    BITCOIN
 }
