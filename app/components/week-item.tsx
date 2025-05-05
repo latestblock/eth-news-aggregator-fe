@@ -1,5 +1,6 @@
 import { FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Chain } from "@/app/types";
 
 interface WeekItemProps {
   year: number;
@@ -7,6 +8,7 @@ interface WeekItemProps {
   week: number;
   pathname: string;
   router: any;
+  chainId?: Chain;
 }
 
 export function WeekItem({
@@ -15,12 +17,15 @@ export function WeekItem({
   week,
   pathname,
   router,
+  chainId = Chain.ETHEREUM,
 }: WeekItemProps) {
-  const isActive = pathname === `/news/${year}/${month}/${week}`;
+  const chainPath = chainId.toLowerCase();
+  const weekPath = `/${chainPath}/news/${year}/${month}/${week}`;
+  const isActive = pathname === weekPath;
 
   return (
     <button
-      onClick={() => router.push(`/news/${year}/${month}/${week}`)}
+      onClick={() => router.push(weekPath)}
       className={cn(
         "flex items-center w-full p-1.5 text-sm hover:bg-accent/40 rounded-lg text-left transition-all duration-300 group",
         isActive ? "bg-primary/10 text-primary" : "hover:text-primary"

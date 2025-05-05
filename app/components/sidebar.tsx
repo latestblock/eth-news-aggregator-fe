@@ -4,13 +4,17 @@ import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { YearItem } from "./year-item";
-import { NewsGroup } from "@/app/types";
+import { NewsGroup, Chain } from "@/app/types";
 
 interface SidebarProps {
   newsGroups: NewsGroup[];
+  chainId?: Chain;
 }
 
-export function Sidebar({ newsGroups }: SidebarProps) {
+export function Sidebar({
+  newsGroups,
+  chainId = Chain.ETHEREUM,
+}: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [expandedYears, setExpandedYears] = useState<number[]>([]);
@@ -66,6 +70,7 @@ export function Sidebar({ newsGroups }: SidebarProps) {
               toggleMonth={toggleMonth}
               pathname={pathname}
               router={router}
+              chainId={chainId}
             />
           ))}
         </div>
