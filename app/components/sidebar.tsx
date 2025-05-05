@@ -56,8 +56,8 @@ export function Sidebar({
   };
 
   return (
-    <div className="w-64 rounded-xl bg-light-panel">
-      <ScrollArea className="h-[calc(100vh-4rem)]">
+    <div className="w-full md:w-64 h-full rounded-xl bg-light-panel">
+      <ScrollArea className="h-[calc(100vh-6rem)]">
         <div className="px-2 py-3">
           {newsGroups.map(({ year, months }) => (
             <YearItem

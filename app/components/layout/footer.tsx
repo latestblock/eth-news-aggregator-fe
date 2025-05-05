@@ -7,11 +7,11 @@ type Props = {};
 const Footer = (props: Props) => {
   return (
     <footer className="mt-16 pt-6 pb-8 px-4 border-t border-border/40">
-      <div className="flex flex-col items-center sm:flex-row sm:justify-between gap-6 sm:gap-4 max-w-7xl mx-auto">
+      <div className="flex flex-col-reverse md:flex-row items-center sm:flex-row sm:justify-between gap-6 sm:gap-4 max-w-7xl mx-auto">
         <p className="text-center sm:text-left text-xs sm:text-sm text-muted-foreground">
           © 2025 Latest Block. All rights reserved.
         </p>
-        <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-4">
+        <div className="flex md:flex-col flex-row items-center gap-5 sm:gap-4">
           <a
             href="https://twitter.com/latestblock"
             target="_blank"
