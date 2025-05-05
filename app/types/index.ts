@@ -49,4 +49,5 @@ export interface ChainOption {
   id: Chain;
   name: string;
   logo: React.ReactNode;
+  disabled?: boolean;
 }

@@ -1,18 +1,19 @@
 import { NewsList } from "@/app/components/news-list";
-import { NewsItem } from "@/app/types";
+import { NewsItem, Chain } from "@/app/types";
 
 type WeeklyNewsContentProps = {
   dateRangeTitle: string;
   groupedItems: Record<string, NewsItem[]>;
+  chainName?: Chain;
 };
 
 export const WeeklyNewsContent = (props: WeeklyNewsContentProps) => {
-  const { dateRangeTitle, groupedItems } = props;
+  const { dateRangeTitle, groupedItems, chainName = Chain.ETHEREUM } = props;
   return (
     <div className="w-fit bg-light-panel rounded-xl">
       <div className="mb-6 px-6 pt-6">
         <h1 className="text-xl md:text-2xl font-bold tracking-tight text-gradient animate-in fade-in slide-in-from-bottom-4 duration-1000">
-          Ethereum Weekly News
+          {chainName} Weekly News
         </h1>
 
         <h1 className="text-md font-bold tracking-tight text-gradient animate-in fade-in slide-in-from-bottom-4 duration-1000">
