@@ -50,30 +50,32 @@ const Navbar = () => {
   }, []);
 
   return (
-    <header className="fixed shadow-md top-0 z-50 flex h-16 w-full items-center px-3 sm:px-6 border-b border-border bg-background">
-      <div className="flex items-center">
-        {/* Mobile sidebar toggle button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden h-8 w-8"
-          onClick={toggleSidebar}
-          aria-label="Toggle sidebar"
-        >
-          {isSidebarOpen ? (
-            <X className="h-4 w-4" />
-          ) : (
-            <Menu className="h-4 w-4" />
-          )}
-        </Button>
-
-        <h1 className="text-lg sm:text-xl md:text-2xl text-gradient font-semibold tracking-wide">
-          Latest Block
-        </h1>
-      </div>
-      <div className="ml-auto flex items-center gap-1 sm:gap-2">
-        <ChainSelector chains={chainOptions} currentChain={currentChain} />
-        <ThemeToggle className="h-8 w-8 sm:h-9 sm:w-9" />
+    <header className="fixed top-0 z-50 inset-x-0">
+      <div className="mx-auto w-full max-w-screen-xl border-b border-border bg-background shadow-md">
+        <div className="h-16 flex items-center justify-between px-3 sm:px-6">
+          <div className="flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden h-8 w-8"
+              onClick={toggleSidebar}
+              aria-label="Toggle sidebar"
+            >
+              {isSidebarOpen ? (
+                <X className="h-4 w-4" />
+              ) : (
+                <Menu className="h-4 w-4" />
+              )}
+            </Button>
+            <h1 className="text-lg sm:text-xl md:text-2xl text-gradient font-semibold tracking-wide">
+              Latest Block
+            </h1>
+          </div>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <ChainSelector chains={chainOptions} currentChain={currentChain} />
+            <ThemeToggle className="h-8 w-8 sm:h-9 sm:w-9" />
+          </div>
+        </div>
       </div>
     </header>
   );
