@@ -57,7 +57,7 @@ export function NewsList({ items }: NewsListProps) {
 
   return (
     <div className="bg-light-panel px-3 sm:px-4 md:px-6 py-4 md:py-8">
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-4xl" style={{ width: "100%" }}>
         <div className="mb-4 md:mb-6 flex items-center">
           <Calendar className="mr-2 h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
           <p className="text-xs md:text-sm text-muted-foreground">
