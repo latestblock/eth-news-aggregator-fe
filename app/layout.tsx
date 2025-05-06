@@ -19,9 +19,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-background text-foreground max-w-screen-xl mx-auto`}>
+      <body
+        className={`${inter.className} bg-background text-foreground max-w-screen-xl mx-auto`}
+      >
         <ThemeProvider>
-          <Navbar />
+          <div className="w-full">
+            <Navbar />
+          </div>
           <main className="w-full pb-10 pt-24 flex flex-col items-center justify-center shadow-xl bg-background border border-border">
             {children}
             <Footer />
