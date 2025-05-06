@@ -56,14 +56,14 @@ export default async function ChainNewsPage({
       <MobileSidebarController newsGroups={newsGroups} chainId={chain} />
 
       {/* Main content */}
-      <div className="w-full mx-auto py-4 px-3 sm:px-6 md:px-8 flex flex-col md:flex-row md:gap-6">
-        {/* Desktop sidebar - hidden on mobile */}
-        <div className="hidden md:block md:w-64 lg:w-72 flex-shrink-0">
+      <div className="w-full item-center justify-center py-4 px-3 sm:px-6 md:px-8 flex flex-col min-[981px]:flex-row min-[981px]:gap-6 mx-auto max-w-screen-xl">
+        {/* Desktop sidebar - hidden at 980px and below */}
+        <div className="hidden min-[981px]:block min-[981px]:w-64 lg:w-72 min-[981px]:-ml-2 flex-shrink-0">
           <Sidebar newsGroups={newsGroups} chainId={chain} />
         </div>
 
         {/* Weekly news content */}
-        <div className="flex-grow md:max-w-[calc(100vw-360px)] lg:max-w-[calc(100vw-400px)]">
+        <div className="flex-grow w-full min-[981px]:w-[calc(100%-280px)] lg:w-[calc(100%-300px)] max-w-4xl">
           <WeeklyNewsContent
             dateRangeTitle={dateRangeTitle}
             groupedItems={groupedItems}

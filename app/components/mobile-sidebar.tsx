@@ -24,7 +24,7 @@ export function MobileSidebar({
     <>
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden transition-opacity duration-300",
+          "fixed inset-0 z-40 bg-background/80 backdrop-blur-sm min-[981px]:hidden transition-opacity duration-300",
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
         onClick={onToggle}
@@ -32,7 +32,7 @@ export function MobileSidebar({
 
       <div
         className={cn(
-          "fixed left-0 top-0 z-40 h-full w-[85vw] max-w-[300px] bg-background shadow-xl md:hidden transition-transform duration-300 ease-in-out",
+          "fixed left-0 top-0 z-40 h-full w-[85vw] max-w-[300px] bg-background shadow-xl min-[981px]:hidden transition-transform duration-300 ease-in-out",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

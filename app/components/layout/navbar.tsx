@@ -57,7 +57,7 @@ const Navbar = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden h-8 w-8"
+              className="min-[981px]:hidden h-8 w-8"
               onClick={toggleSidebar}
               aria-label="Toggle sidebar"
             >

@@ -60,7 +60,7 @@ export default function ChainSelector({
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-36 sm:w-48 animate-in fade-in-0 zoom-in-95"
+        className="absolute top-[100%] right-0 w-36 sm:w-48 animate-in fade-in-0 zoom-in-95"
       >
         {chains.map((chain) => (
           <DropdownMenuItem
