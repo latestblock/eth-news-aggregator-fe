@@ -11,12 +11,43 @@ import { groupByCategory } from "@/app/utils/newsUtils";
 import { Chain } from "@/app/types";
 import { getDefaultChain } from "@/app/utils/chainUtils";
 import { chainOptions } from "@/app/components/chain-icons";
+import { Metadata } from "next";
+import { generateMetadata as generatePageMetadata } from "@/app/utils/generate-metadata";
 
-export default async function ChainNewsPage({
-  params,
-}: {
+type Props = {
   params: { chain: string; year: string; month: string; week: string };
-}) {
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const year = parseInt(params.year);
+  const month = parseInt(params.month) - 1;
+  const week = parseInt(params.week);
+
+  // Validate chain parameter
+  const chainParam = params.chain.toUpperCase();
+  const chain = Object.values(Chain).includes(chainParam as Chain)
+    ? (chainParam as Chain)
+    : getDefaultChain();
+
+  // Calculate start and end dates for the week
+  const startDay = new Date(year, month, (week - 1) * 7 + 1);
+  const endDay = new Date(year, month, week * 7);
+
+  const dateRangeTitle = formatDateRange(startDay, endDay);
+  const formattedChainName =
+    chain.charAt(0).toUpperCase() + chain.slice(1).toLowerCase();
+
+  const title = `${formattedChainName} News: ${dateRangeTitle}`;
+  const description = `${formattedChainName} blockchain news and updates for the week of ${dateRangeTitle}. Stay informed with the latest developments.`;
+
+  return generatePageMetadata({
+    title,
+    description,
+    image: `/og-images/${chain.toLowerCase()}-news.png`,
+  });
+}
+
+export default async function ChainNewsPage({ params }: Props) {
   const year = parseInt(params.year);
   const month = parseInt(params.month) - 1;
   const week = parseInt(params.week);
