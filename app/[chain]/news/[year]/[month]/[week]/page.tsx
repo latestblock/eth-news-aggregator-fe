@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { Sidebar } from "@/app/components/sidebar";
+import { MobileSidebarController } from "@/app/components/mobile-sidebar-controller";
 import { WeeklyNewsContent } from "@/app/components/weekly-news-content";
 import { formatDateRange } from "@/app/utils/dateUtils";
 import {
@@ -50,13 +51,26 @@ export default async function ChainNewsPage({
   const dateRangeTitle = formatDateRange(startDay, endDay);
 
   return (
-    <div className="w-fit mx-4 bg-light-panel shadow-2xl rounded-xl flex border border-border/60">
-      <Sidebar newsGroups={newsGroups} chainId={chain} />
-      <WeeklyNewsContent
-        dateRangeTitle={dateRangeTitle}
-        groupedItems={groupedItems}
-        chainName={chain}
-      />
-    </div>
+    <>
+      {/* Mobile sidebar controller (includes toggle button in navbar) */}
+      <MobileSidebarController newsGroups={newsGroups} chainId={chain} />
+
+      {/* Main content */}
+      <div className="w-full item-center justify-center py-4 px-3 sm:px-6 md:px-8 flex flex-col min-[981px]:flex-row min-[981px]:gap-6 mx-auto max-w-screen-xl">
+        {/* Desktop sidebar - hidden at 980px and below */}
+        <div className="hidden min-[981px]:block min-[981px]:w-64 lg:w-72 min-[981px]:-ml-2 flex-shrink-0">
+          <Sidebar newsGroups={newsGroups} chainId={chain} />
+        </div>
+
+        {/* Weekly news content */}
+        <div className="flex-grow w-full min-[981px]:w-[calc(100%-280px)] lg:w-[calc(100%-300px)] max-w-4xl">
+          <WeeklyNewsContent
+            dateRangeTitle={dateRangeTitle}
+            groupedItems={groupedItems}
+            chainName={chain}
+          />
+        </div>
+      </div>
+    </>
   );
 }

@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fix for dropdown layout shifting issue */
+[data-radix-popper-content-wrapper] {
+  position: absolute !important;
+  width: var(--radix-popper-anchor-width);
+  transform-origin: var(--radix-popper-transform-origin);
+  top: var(--radix-popper-anchor-height);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+[data-radix-popper-content-wrapper] > * {
+  pointer-events: auto;
+}
+
 @layer base {
   :root {
     --background: 220 30% 98%;
@@ -72,10 +86,16 @@
   body {
     @apply bg-background text-foreground hide-scrollbar;
     font-feature-settings: "rlig" 1, "calt" 1;
+    margin: 0;
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
   }
 
   html {
     @apply hide-scrollbar;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 }
 
@@ -155,6 +175,27 @@
         hsla(var(--network-bitcoin) / 0.1),
         transparent 50%
       );
+  }
+
+  /* Fixed layout utilities */
+  .fixed-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .fixed-navbar {
+    position: fixed;
+    width: 100%;
+    z-index: 50;
+  }
+
+  .fixed-content {
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 1280px; /* Matches max-w-screen-xl */
+    margin: 0 auto;
   }
 }
 
