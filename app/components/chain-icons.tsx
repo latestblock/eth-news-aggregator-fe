@@ -1,6 +1,6 @@
 import React from "react";
-import { Bitcoin, Cpu, Leaf } from "lucide-react";
 import { ChainOption, Chain } from "@/app/types";
+import { EthereumIcon, BitcoinIcon, SolanaIcon } from "@/assets";
 
 // Chain icons configuration
 export const chainOptions: ChainOption[] = [
@@ -8,21 +8,21 @@ export const chainOptions: ChainOption[] = [
     id: Chain.ETHEREUM,
     name: "Ethereum",
     shortName: "ETH",
-    logo: <Cpu className="h-4 w-4 text-purple-600" />,
+    logo: <EthereumIcon className="h-4 w-4" />,
     disabled: false,
   },
   {
     id: Chain.SOLANA,
     name: "Solana",
     shortName: "SOL",
-    logo: <Leaf className="h-4 w-4 text-green-600" />,
+    logo: <SolanaIcon className="h-4 w-4" />,
     disabled: true,
   },
   {
     id: Chain.BITCOIN,
     name: "Bitcoin",
     shortName: "BTC",
-    logo: <Bitcoin className="h-4 w-4 text-orange-500" />,
+    logo: <BitcoinIcon className="h-4 w-4" />,
     disabled: true,
   },
 ];

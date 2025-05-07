@@ -13,11 +13,8 @@ export const WeeklyNewsContent = (props: WeeklyNewsContentProps) => {
     <div className="w-full bg-light-panel rounded-xl shadow-2xl border border-border/60 overflow-hidden">
       <div className="mb-4 md:mb-6 px-4 md:px-6 pt-4 md:pt-6">
         <h1 className="text-lg md:text-2xl font-bold tracking-tight text-gradient animate-in fade-in slide-in-from-bottom-4 duration-1000">
-          {chainName} Weekly News
-        </h1>
-
-        <h1 className="text-sm md:text-md font-bold tracking-tight text-gradient animate-in fade-in slide-in-from-bottom-4 duration-1000">
-          {dateRangeTitle}
+          {chainName.charAt(0).toUpperCase() + chainName.slice(1).toLowerCase()}{" "}
+          Weekly News
         </h1>
       </div>
 
@@ -31,7 +28,7 @@ export const WeeklyNewsContent = (props: WeeklyNewsContentProps) => {
               <div className="absolute -bottom-2 left-0 w-16 md:w-24 h-0.5 bg-gradient-to-r from-primary to-transparent"></div>
             </div>
 
-            <NewsList items={items} />
+            <NewsList items={items} category={category} />
           </div>
         ))
       ) : (
