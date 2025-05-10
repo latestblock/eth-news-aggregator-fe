@@ -23,6 +23,35 @@ export function WeekItem({
   const weekPath = `/${chainPath}/news/${year}/${month}/${week}`;
   const isActive = pathname === weekPath;
 
+  // Calculate date range for the week
+  const getDateRangeForWeek = () => {
+    // Create date for the first day of the month
+    const firstDayOfMonth = new Date(year, month - 1, 1);
+
+    // Calculate the start date of the week (1-based week)
+    const startDay = (week - 1) * 7 + 1;
+    const startDate = new Date(year, month - 1, startDay);
+
+    // Calculate the end date (start + 6 days)
+    const endDate = new Date(year, month - 1, startDay + 6);
+
+    // Handle edge cases where week extends to next month
+    if (endDate.getMonth() !== month - 1) {
+      // If end date is in next month, use last day of current month
+      endDate.setDate(0); // Last day of previous month
+    }
+
+    // Format dates: "Month Day - Month Day"
+    const startMonth = startDate.toLocaleString("default", { month: "short" });
+    const endMonth = endDate.toLocaleString("default", { month: "short" });
+
+    if (startMonth === endMonth) {
+      return `${startMonth} ${startDate.getDate()} - ${endDate.getDate()}`;
+    } else {
+      return `${startMonth} ${startDate.getDate()} - ${endMonth} ${endDate.getDate()}`;
+    }
+  };
+
   return (
     <button
       onClick={() => router.push(weekPath)}
@@ -32,7 +61,7 @@ export function WeekItem({
       )}
     >
       <FileText className="h-3 w-3 mr-1.5 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
-      <span className="truncate text-xs">Week {week}</span>
+      <span className="truncate text-xs">{getDateRangeForWeek()}</span>
     </button>
   );
 }

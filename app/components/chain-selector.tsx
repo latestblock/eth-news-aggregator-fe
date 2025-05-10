@@ -30,7 +30,7 @@ export default function ChainSelector({
 
   const handleChainChange = (chainId: string, disabled: boolean) => {
     if (disabled) return; // Don't navigate if chain is disabled
-    router.push(`/${chainId}`);
+    router.push(`/${chainId.toLowerCase()}`);
   };
 
   return (

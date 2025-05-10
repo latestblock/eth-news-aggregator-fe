@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { Chain } from "@/app/types";
-import { getDefaultChain } from "./utils/chainUtils";
+import { getDefaultChainRoute } from "./utils/chainUtils";
 
 export default async function Home() {
-  const defaultChain = getDefaultChain();
+  const defaultChain = getDefaultChainRoute();
   redirect(`/${defaultChain}`);
 }

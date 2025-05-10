@@ -13,3 +13,10 @@ export function convertToPrismaChain(chain: Chain): string {
 export function getDefaultChain(): Chain {
   return Chain.ETHEREUM;
 }
+
+/**
+ * Get default chain ID in lowercase for routes
+ */
+export function getDefaultChainRoute(): string {
+  return getDefaultChain().toLowerCase();
+}
