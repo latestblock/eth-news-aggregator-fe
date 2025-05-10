@@ -72,7 +72,7 @@ const Navbar = () => {
             </h1>
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
-            {/* <ChainSelector chains={chainOptions} currentChain={currentChain} /> */}
+            {/* <ChainloSelector chains={chainOptions} currentChain={currentChain} /> */}
             <ThemeToggle className="h-8 w-8 sm:h-9 sm:w-9" />
           </div>
         </div>
