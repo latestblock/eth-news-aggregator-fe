@@ -12,6 +12,7 @@ export async function fetchAvailableDateRanges(chain: Chain) {
       status: "APPROVED",
       date: {
         not: null,
+        gte: new Date("2025-01-01"), // Ensure date is not before 2025
       },
       chain: chain as any,
     },

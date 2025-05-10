@@ -25,7 +25,7 @@ export function Sidebar({
     const recentMonths: string[] = [];
     const recentYears: number[] = [];
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       const date = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth() - i
