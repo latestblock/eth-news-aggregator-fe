@@ -3,12 +3,31 @@ import prisma from "@/lib/prisma";
 import { Chain } from "@/app/types";
 import { getDefaultChain, getDefaultChainRoute } from "@/app/utils/chainUtils";
 import { chainOptions } from "@/app/components/chain-icons";
+import { Metadata } from "next";
+import { generateMetadata as generatePageMetadata } from "@/app/utils/generate-metadata";
 
-export default async function ChainHomePage({
-  params,
-}: {
+type Props = {
   params: { chain?: string };
-}) {
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const chainParam = params.chain?.toUpperCase() || "";
+
+  const chain = Object.values(Chain).includes(chainParam.toUpperCase() as Chain)
+    ? (chainParam.toUpperCase() as Chain)
+    : getDefaultChain();
+
+  const formattedChainName =
+    chain.charAt(0).toUpperCase() + chain.slice(1).toLowerCase();
+
+  return generatePageMetadata({
+    title: `${formattedChainName} News`,
+    description: `Stay updated with the latest ${formattedChainName} blockchain news and developments.`,
+    image: `/og-images/${chain.toLowerCase()}.png`,
+  });
+}
+
+export default async function ChainHomePage({ params }: Props) {
   // Default to Ethereum if chain is not provided or invalid
   const chainParam = params.chain?.toUpperCase() || "";
 

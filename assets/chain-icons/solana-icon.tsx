@@ -1,9 +1,19 @@
-const SolanaIcon = ({ className }: { className?: string }) => (
+const SolanaIcon = ({
+  className,
+  height = 24,
+  width = 24,
+}: {
+  className?: string;
+  height?: number;
+  width?: number;
+}) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
+    height={height}
+    width={width}
   >
     <path
       d="M17.52 9.6C17.4 9.48 17.24 9.4 17.08 9.4H4.92C4.6 9.4 4.44 9.76 4.68 9.96L6.48 11.6C6.6 11.72 6.76 11.8 6.92 11.8H19.08C19.4 11.8 19.56 11.44 19.32 11.24L17.52 9.6Z"

@@ -1,6 +1,16 @@
-const EthereumIcon = ({ className }: { className?: string }) => (
+const EthereumIcon = ({
+  className,
+  height = 24,
+  width = 24,
+}: {
+  className?: string;
+  height?: number;
+  width?: number;
+}) => (
   <svg
     viewBox="0 0 24 24"
+    height={height}
+    width={width}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
