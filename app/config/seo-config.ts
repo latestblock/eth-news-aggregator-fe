@@ -1,18 +1,17 @@
 export const siteConfig = {
   name: "Ethereum News Aggregator",
-  url: process.env.NEXT_PUBLIC_APP_URL || "https://eth-news-aggregator.com",
+  url: process.env.NEXT_PUBLIC_APP_URL,
   //   ogImage: "/og-images/default.png",
   description:
     "Stay updated with the latest Ethereum news aggregated from trusted sources across the web.",
   links: {
     twitter: "https://twitter.com/ethnewsagg",
-    github: "https://github.com/yourusername/eth-news-aggregator-fe",
   },
   keywords: ["ethereum", "news", "blockchain", "crypto", "web3", "defi"],
   authors: [
     {
       name: "Ethereum News Aggregator Team",
-      url: process.env.NEXT_PUBLIC_APP_URL || "https://eth-news-aggregator.com",
+      url: process.env.NEXT_PUBLIC_APP_URL,
     },
   ],
   creator: "Ethereum News Aggregator Team",
@@ -25,9 +24,7 @@ export const siteConfig = {
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
-  manifest: `${
-    process.env.NEXT_PUBLIC_APP_URL || "https://eth-news-aggregator.com"
-  }/site.webmanifest`,
+  manifest: `${process.env.NEXT_PUBLIC_APP_URL}/site.webmanifest`,
 };
 
 export const seoConfig = {
