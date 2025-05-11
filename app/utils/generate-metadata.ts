@@ -16,7 +16,8 @@ export function generateMetadata({
 }: GenerateMetadataProps): Metadata {
   const metaTitle = title ? title : siteConfig.name;
   const metaDescription = description || siteConfig.description;
-  // const ogImage = image || siteConfig.ogImage;
+  const ogImage = image || `/og-images/default.png`;
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
 
   return {
     title: metaTitle,
@@ -24,22 +25,22 @@ export function generateMetadata({
     openGraph: {
       title: metaTitle,
       description: metaDescription,
-      // images: [
-      //   {
-      //     url: ogImage.startsWith("http")
-      //       ? ogImage
-      //       : `${siteConfig.url}${ogImage}`,
-      //     width: 1200,
-      //     height: 630,
-      //     alt: metaTitle,
-      //   },
-      // ],
+      images: [
+        {
+          url: ogImage.startsWith("http") ? ogImage : `${baseUrl}${ogImage}`,
+          width: 1200,
+          height: 630,
+          alt: metaTitle,
+        },
+      ],
+      type: "website",
+      siteName: siteConfig.name,
     },
     twitter: {
       card: "summary_large_image",
       title: metaTitle,
       description: metaDescription,
-      // images: [ogImage],
+      images: [ogImage.startsWith("http") ? ogImage : `${baseUrl}${ogImage}`],
     },
     ...(noIndex && {
       robots: {

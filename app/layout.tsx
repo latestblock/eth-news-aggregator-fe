@@ -25,20 +25,28 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
-    // images: [
-    //   {
-    //     url: siteConfig.ogImage,
-    //     width: 1200,
-    //     height: 630,
-    //     alt: siteConfig.name,
-    //   },
-    // ],
+    images: [
+      {
+        url: `${
+          siteConfig.url
+        }/api/og?chain=ETHEREUM&title=${encodeURIComponent(
+          siteConfig.name
+        )}&description=${encodeURIComponent(siteConfig.description)}`,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+    ],
   },
   twitter: {
     card: siteConfig.twitter.card,
     title: siteConfig.name,
     description: siteConfig.description,
-    // images: [siteConfig.ogImage],
+    images: [
+      `${siteConfig.url}/api/og?chain=ETHEREUM&title=${encodeURIComponent(
+        siteConfig.name
+      )}&description=${encodeURIComponent(siteConfig.description)}`,
+    ],
     creator: siteConfig.twitter.creator,
   },
   icons: siteConfig.icons,

@@ -40,10 +40,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${formattedChainName} News: ${dateRangeTitle}`;
   const description = `${formattedChainName} blockchain news and updates for the week of ${dateRangeTitle}. Stay informed with the latest developments.`;
 
+  // Generate URL for the dynamic OG image
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || "https://eth-news-aggregator.com";
+  const ogImageUrl = `${baseUrl}/api/og?chain=${chain}&title=${encodeURIComponent(
+    title
+  )}&description=${encodeURIComponent(description)}`;
+
   return generatePageMetadata({
     title,
     description,
-    image: `/og-images/${chain.toLowerCase()}-news.png`,
+    image: ogImageUrl,
   });
 }
 
