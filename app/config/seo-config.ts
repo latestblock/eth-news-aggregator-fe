@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "Ethereum News Aggregator",
+  name: "Latest Block",
   url: process.env.NEXT_PUBLIC_APP_URL,
   //   ogImage: "/og-images/default.png",
   description:
@@ -10,11 +10,11 @@ export const siteConfig = {
   keywords: ["ethereum", "news", "blockchain", "crypto", "web3", "defi"],
   authors: [
     {
-      name: "Ethereum News Aggregator Team",
+      name: "Latest Block Team",
       url: process.env.NEXT_PUBLIC_APP_URL,
     },
   ],
-  creator: "Ethereum News Aggregator Team",
+  creator: "Latest Block Team",
   twitter: {
     card: "summary_large_image" as const,
     creator: "@ethnewsagg",
@@ -39,12 +39,16 @@ export const seoConfig = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [
-      //   {
-      //     url: `${siteConfig.url}${siteConfig.ogImage}`,
-      //     width: 1200,
-      //     height: 630,
-      //     alt: siteConfig.name,
-      //   },
+      {
+        url: `${
+          siteConfig.url
+        }/api/og?chain=ETHEREUM&title=${encodeURIComponent(
+          siteConfig.name
+        )}&description=${encodeURIComponent(siteConfig.description)}`,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
     ],
   },
   twitter: {
@@ -56,6 +60,26 @@ export const seoConfig = {
     {
       name: "viewport",
       content: "width=device-width, initial-scale=1",
+    },
+    {
+      property: "og:image:width",
+      content: "1200",
+    },
+    {
+      property: "og:image:height",
+      content: "630",
+    },
+    {
+      name: "twitter:image",
+      content: `${
+        siteConfig.url
+      }/api/og?chain=ETHEREUM&title=${encodeURIComponent(
+        siteConfig.name
+      )}&description=${encodeURIComponent(siteConfig.description)}`,
+    },
+    {
+      property: "og:image:type",
+      content: "image/png",
     },
   ],
 };

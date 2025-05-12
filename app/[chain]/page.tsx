@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return generatePageMetadata({
     title: `${formattedChainName} News`,
     description: `Stay updated with the latest ${formattedChainName} blockchain news and developments.`,
-    image: `/og-images/${chain.toLowerCase()}.png`,
+    chain: chain,
   });
 }
 

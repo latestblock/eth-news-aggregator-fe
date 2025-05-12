@@ -1,7 +1,7 @@
 import React from "react";
 import { Chain } from "@/app/types";
-import { EthereumIcon, SolanaIcon, BitcoinIcon } from "@/assets";
 
+//todo: we can remove this component if the current implementation of the og images work.
 interface Props {
   title: string;
   description: string;
@@ -9,16 +9,19 @@ interface Props {
 }
 
 const OgImageResponse = ({ title, description, chain }: Props) => {
-  const renderChainIcons = () => {
+  const getChainImageSrc = () => {
     switch (chain) {
       case Chain.ETHEREUM:
-        return <EthereumIcon height={100} width={100} />;
+        return "/images/chains/ethereum.svg";
       case Chain.SOLANA:
-        return <SolanaIcon height={100} width={100} />;
+        return "/images/chains/solana.svg";
       case Chain.BITCOIN:
-        return <BitcoinIcon height={100} width={100} />;
+        return "/images/chains/bitcoin.svg";
+      default:
+        return "/images/chains/ethereum.svg";
     }
   };
+
   return (
     <>
       <div
@@ -49,7 +52,13 @@ const OgImageResponse = ({ title, description, chain }: Props) => {
             maxWidth: "90%",
           }}
         >
-          {renderChainIcons()}
+          <img
+            src={getChainImageSrc()}
+            alt={`${chain} logo`}
+            width="100"
+            height="100"
+            style={{ marginBottom: "20px" }}
+          />
 
           <div
             style={{
@@ -90,7 +99,7 @@ const OgImageResponse = ({ title, description, chain }: Props) => {
             fontSize: "24px",
           }}
         >
-          Ethereum News Aggregator
+          Latest BLock
         </div>
       </div>
     </>

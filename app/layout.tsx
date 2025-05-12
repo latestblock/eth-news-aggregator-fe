@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "./components/layout/navbar";
 import Footer from "./components/layout/footer";
-import { ThemeProvider } from "./providers";
+import { Providers } from "./providers";
 import { siteConfig } from "./config/seo-config";
+import { Chain } from "./types";
 
 import "./globals.css";
 
@@ -63,7 +64,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-background text-foreground max-w-screen-xl mx-auto fixed-container`}
       >
-        <ThemeProvider>
+        <Providers>
           <div className="w-full fixed-navbar">
             <Navbar />
           </div>
@@ -71,7 +72,7 @@ export default function RootLayout({
             {children}
             <Footer />
           </main>
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
