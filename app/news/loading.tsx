@@ -1,7 +1,7 @@
-import Loader from "@/components/ui/loader";
+import { FullPageLoader } from "@/components/ui/loaders";
 
 const Loading = () => {
-  return <Loader />;
+  return <FullPageLoader subtitle="Fetching the latest crypto news..." />;
 };
 
 export default Loading;

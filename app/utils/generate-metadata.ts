@@ -1,10 +1,12 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/app/config/seo-config";
+import { Chain } from "@/app/types";
 
 type GenerateMetadataProps = {
   title?: string;
   description?: string;
   image?: string;
+  chain?: Chain;
   noIndex?: boolean;
 };
 
@@ -12,12 +14,19 @@ export function generateMetadata({
   title,
   description,
   image,
-  noIndex = false,
+  chain = Chain.ETHEREUM,
+  noIndex = true,
 }: GenerateMetadataProps): Metadata {
   const metaTitle = title ? title : siteConfig.name;
   const metaDescription = description || siteConfig.description;
-  const ogImage = image || `/og-images/default.png`;
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+  // Generate dynamic OG image URL using our API
+  const dynamicOgImage =
+    image ||
+    `${baseUrl}/api/og?chain=${chain}&title=${encodeURIComponent(
+      metaTitle
+    )}&description=${encodeURIComponent(metaDescription)}`;
 
   return {
     title: metaTitle,
@@ -27,7 +36,7 @@ export function generateMetadata({
       description: metaDescription,
       images: [
         {
-          url: ogImage.startsWith("http") ? ogImage : `${baseUrl}${ogImage}`,
+          url: dynamicOgImage,
           width: 1200,
           height: 630,
           alt: metaTitle,
@@ -40,7 +49,10 @@ export function generateMetadata({
       card: "summary_large_image",
       title: metaTitle,
       description: metaDescription,
-      images: [ogImage.startsWith("http") ? ogImage : `${baseUrl}${ogImage}`],
+      images: [dynamicOgImage],
+    },
+    alternates: {
+      canonical: `${baseUrl}`,
     },
     ...(noIndex && {
       robots: {
