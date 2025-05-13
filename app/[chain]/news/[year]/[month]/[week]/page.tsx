@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { Sidebar } from "@/app/components/sidebar";
 import { MobileSidebarController } from "@/app/components/mobile-sidebar-controller";
 import { WeeklyNewsContent } from "@/app/components/weekly-news-content";
-import { formatDateRange } from "@/app/utils/dateUtils";
+import { formatDateRange, getDateRangeForWeek } from "@/app/utils/dateUtils";
 import {
   fetchAvailableDateRanges,
   fetchNewsItemsForWeek,
@@ -20,7 +20,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const year = parseInt(params.year);
-  const month = parseInt(params.month) - 1;
+  // URL params are 1-indexed for months
+  const month = parseInt(params.month);
   const week = parseInt(params.week);
 
   // Validate chain parameter
@@ -29,9 +30,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? (chainParam as Chain)
     : getDefaultChain();
 
-  // Calculate start and end dates for the week
-  const startDay = new Date(year, month, (week - 1) * 7 + 1);
-  const endDay = new Date(year, month, week * 7);
+  // Calculate start and end dates for the week using our configured week boundaries
+  const { startDay, endDay } = getDateRangeForWeek(year, month, week);
 
   const dateRangeTitle = formatDateRange(startDay, endDay);
   const formattedChainName =
@@ -54,7 +54,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ChainNewsPage({ params }: Props) {
   const year = parseInt(params.year);
-  const month = parseInt(params.month) - 1;
+  // URL params are 1-indexed for months
+  const month = parseInt(params.month);
   const week = parseInt(params.week);
 
   // Validate chain parameter
@@ -72,10 +73,8 @@ export default async function ChainNewsPage({ params }: Props) {
     );
   }
 
-  // Calculate start and end dates for the week
-  const firstDayOfMonth = new Date(year, month, 1);
-  const startDay = new Date(year, month, (week - 1) * 7 + 1);
-  const endDay = new Date(year, month, week * 7);
+  // Calculate start and end dates for the week using our configured week boundaries
+  const { startDay, endDay } = getDateRangeForWeek(year, month, week);
 
   // Fetch data in parallel
   const [newsItems, newsGroups] = await Promise.all([

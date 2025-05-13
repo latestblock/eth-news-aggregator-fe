@@ -1,6 +1,7 @@
 import { FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Chain } from "@/app/types";
+import { getDateRangeForWeek } from "@/app/utils/dateUtils";
 
 interface WeekItemProps {
   year: number;
@@ -23,32 +24,26 @@ export function WeekItem({
   const weekPath = `/${chainPath}/news/${year}/${month}/${week}`;
   const isActive = pathname === weekPath;
 
-  // Calculate date range for the week
-  const getDateRangeForWeek = () => {
-    // Create date for the first day of the month
-    const firstDayOfMonth = new Date(year, month - 1, 1);
+  // Format date range for the week using our utility function
+  const formatWeekDateRange = () => {
+    try {
+      const { startDay, endDay } = getDateRangeForWeek(year, month, week);
 
-    // Calculate the start date of the week (1-based week)
-    const startDay = (week - 1) * 7 + 1;
-    const startDate = new Date(year, month - 1, startDay);
+      // Format dates: "Month Day - Month Day"
+      const startMonth = startDay.toLocaleString("default", { month: "short" });
+      const endMonth = endDay.toLocaleString("default", { month: "short" });
 
-    // Calculate the end date (start + 6 days)
-    const endDate = new Date(year, month - 1, startDay + 6);
-
-    // Handle edge cases where week extends to next month
-    if (endDate.getMonth() !== month - 1) {
-      // If end date is in next month, use last day of current month
-      endDate.setDate(0); // Last day of previous month
-    }
-
-    // Format dates: "Month Day - Month Day"
-    const startMonth = startDate.toLocaleString("default", { month: "short" });
-    const endMonth = endDate.toLocaleString("default", { month: "short" });
-
-    if (startMonth === endMonth) {
-      return `${startMonth} ${startDate.getDate()} - ${endDate.getDate()}`;
-    } else {
-      return `${startMonth} ${startDate.getDate()} - ${endMonth} ${endDate.getDate()}`;
+      if (startMonth === endMonth) {
+        return `${startMonth} ${startDay.getDate()} - ${endDay.getDate()}`;
+      } else {
+        return `${startMonth} ${startDay.getDate()} - ${endMonth} ${endDay.getDate()}`;
+      }
+    } catch (err) {
+      console.error(
+        `Error calculating date range for Y:${year} M:${month} W:${week}`,
+        err
+      );
+      return `Week ${week}`;
     }
   };
 
@@ -61,7 +56,7 @@ export function WeekItem({
       )}
     >
       <FileText className="h-3 w-3 mr-1.5 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
-      <span className="truncate text-xs">{getDateRangeForWeek()}</span>
+      <span className="truncate text-xs">{formatWeekDateRange()}</span>
     </button>
   );
 }

@@ -5,6 +5,10 @@ import { getDefaultChain, getDefaultChainRoute } from "@/app/utils/chainUtils";
 import { chainOptions } from "@/app/components/chain-icons";
 import { Metadata } from "next";
 import { generateMetadata as generatePageMetadata } from "@/app/utils/generate-metadata";
+import {
+  getWeekNumberInMonth,
+  getMostRecentReleaseDay,
+} from "@/app/utils/dateUtils";
 
 type Props = {
   params: { chain?: string };
@@ -43,7 +47,8 @@ export default async function ChainHomePage({ params }: Props) {
     redirect(`/${getDefaultChainRoute()}`);
   }
 
-  const latestNewsItem = await prisma.newsItem.findFirst({
+  // First check if we have any news
+  const anyNewsItem = await prisma.newsItem.findFirst({
     where: {
       date: {
         not: null,
@@ -51,12 +56,9 @@ export default async function ChainHomePage({ params }: Props) {
       status: "APPROVED",
       chain: chain as any,
     },
-    orderBy: {
-      date: "desc",
-    },
   });
 
-  if (!latestNewsItem || !latestNewsItem.date) {
+  if (!anyNewsItem || !anyNewsItem.date) {
     return (
       <div className="text-2xl font-bold mb-6 px-6 pt-6">
         <h1 className="text-2xl font-bold mb-6 px-6 pt-6">
@@ -71,12 +73,13 @@ export default async function ChainHomePage({ params }: Props) {
     );
   }
 
-  // Calculate year, month, and week from the latest news item
-  const date = new Date(latestNewsItem.date);
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const dayOfMonth = date.getDate();
-  const week = Math.ceil(dayOfMonth / 7);
+  // Get the most recent release day (e.g., Sunday)
+  const lastReleaseDay = getMostRecentReleaseDay();
+
+  // Calculate year, month, and week for the latest release period
+  const year = lastReleaseDay.getFullYear();
+  const month = lastReleaseDay.getMonth() + 1; // Convert to 1-indexed month
+  const week = getWeekNumberInMonth(lastReleaseDay);
 
   redirect(`/${chain.toLowerCase()}/news/${year}/${month}/${week}`);
 }

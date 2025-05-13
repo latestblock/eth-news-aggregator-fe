@@ -2,6 +2,11 @@ import prisma from "@/lib/prisma";
 import { mapPrismaNewsItemsToComponentNewsItems } from "@/app/utils/newsUtils";
 import { Chain } from "../types";
 import { convertToPrismaChain } from "../utils/chainUtils";
+import {
+  getWeekNumberInMonth,
+  getStartOfWeek,
+  getEndOfWeek,
+} from "../utils/dateUtils";
 
 /**
  * Fetch available date ranges for news items
@@ -32,8 +37,7 @@ export async function fetchAvailableDateRanges(chain: Chain) {
     const date = new Date(item.date);
     const year = date.getFullYear();
     const month = date.getMonth() + 1; // JavaScript months are 0-based
-    const dayOfMonth = date.getDate();
-    const week = Math.ceil(dayOfMonth / 7);
+    const week = getWeekNumberInMonth(date);
 
     // Add to year map
     if (!yearMonthWeekMap.has(year)) {
@@ -101,11 +105,15 @@ export async function fetchNewsItemsForWeek(
   chain: Chain
 ) {
   try {
+    // When a specific date range is provided, use it directly
+    const weekStart = startDay;
+    const weekEnd = endDay;
+
     const dbNewsItems = await prisma.newsItem.findMany({
       where: {
         date: {
-          gte: startDay,
-          lte: endDay,
+          gte: weekStart,
+          lte: weekEnd,
         },
         status: "APPROVED",
         chain: chain as any,
@@ -121,6 +129,23 @@ export async function fetchNewsItemsForWeek(
     return mapPrismaNewsItemsToComponentNewsItems(dbNewsItems);
   } catch (error) {
     console.error("Error fetching news items for week:", error);
+    return [];
+  }
+}
+
+/**
+ * Fetch news items for the most recent week
+ */
+export async function fetchRecentNewsItems(chain: Chain) {
+  try {
+    // Get current date and determine the week range
+    const today = new Date();
+    const weekStart = getStartOfWeek(today);
+    const weekEnd = getEndOfWeek(today);
+
+    return await fetchNewsItemsForWeek(weekStart, weekEnd, chain);
+  } catch (error) {
+    console.error("Error fetching recent news items:", error);
     return [];
   }
 }
