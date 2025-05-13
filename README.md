@@ -35,6 +35,43 @@ This configuration ensures that:
 - News is released on Sundays (configurable)
 - Each news week spans from Monday to Sunday (configurable)
 
+#### Configuring via Environment Variables
+
+You can override the default configuration using environment variables:
+
+```
+# In your .env or .env.local file
+NEWS_RELEASE_DAY=6    # Use Saturday as release day
+NEWS_WEEK_START_DAY=1 # Use Monday as week start day
+NEWS_WEEK_END_DAY=0   # Use Sunday as week end day
+```
+
+Day of week values:
+
+- 0 = Sunday
+- 1 = Monday
+- 2 = Tuesday
+- 3 = Wednesday
+- 4 = Thursday
+- 5 = Friday
+- 6 = Saturday
+
+##### Example: Changing to Friday Release with Monday-Sunday Week
+
+To set Friday as the release day while keeping Monday-Sunday as your week:
+
+1. Create a `.env.local` file in your project root with:
+
+   ```
+   NEWS_RELEASE_DAY=5
+   NEWS_WEEK_START_DAY=1
+   NEWS_WEEK_END_DAY=0
+   ```
+
+2. Restart your development server or rebuild the application
+
+The application will automatically use Friday as the release day and still maintain Monday to Sunday week boundaries.
+
 ### Date Utilities
 
 The date handling logic is implemented in `app/utils/dateUtils.ts`:
