@@ -18,29 +18,20 @@ export function Sidebar({
 }: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const [expandedYears, setExpandedYears] = useState<number[]>([]);
-  const [expandedMonths, setExpandedMonths] = useState<string[]>([]);
+  const [expandedMonth, setExpandedMonth] = useState<string | null>(null);
 
   useEffect(() => {
-    const currentDate = new Date();
-    const recentMonths: string[] = [];
-    const recentYears: number[] = [];
-
-    for (let i = 0; i < 2; i++) {
-      const date = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() - i
-      );
-      const yearMonth = `${date.getFullYear()}-${date.getMonth() + 1}`;
-      recentMonths.push(yearMonth);
-      if (!recentYears.includes(date.getFullYear())) {
-        recentYears.push(date.getFullYear());
-      }
+    // Extract current year and month from pathname
+    const match = pathname.match(/\/(\d+)\/(\d+)\/(\d+)$/);
+    if (match) {
+      const [, year, month] = match;
+      setExpandedMonth(`${year}-${month}`);
     }
+  }, [pathname]);
 
-    setExpandedMonths(recentMonths);
-    setExpandedYears(recentYears);
-  }, []);
+  const toggleMonth = (yearMonth: string) => {
+    setExpandedMonth(prev => prev === yearMonth ? null : yearMonth);
+  };
 
   const navigateToWeek = (year: number, month: number, week: number) => {
     const chainPath = chainId.toLowerCase();
@@ -56,8 +47,8 @@ export function Sidebar({
       endDay.setDate(0); // Last day of the month
     }
 
-    const startDate = startDay.getDate();
-    const endDate = endDay.getDate();
+    const startDate = startDay.getDate().toString().padStart(2, '0');
+    const endDate = endDay.getDate().toString().padStart(2, '0');
     const startMonth = startDay.toLocaleString('default', { month: 'short' });
     const endMonth = endDay.toLocaleString('default', { month: 'short' });
 
@@ -74,31 +65,48 @@ export function Sidebar({
           {newsGroups.map(({ year, months }) => (
             <div key={year} className="flex flex-col items-center space-y-2">
               <span className="text-sm font-semibold text-muted-foreground">{year}</span>
-              {months.map(({ month, weeks }) => (
-                <div key={month} className="flex flex-col items-center space-y-1">
-                  <span className="text-xs text-muted-foreground">
-                    {new Date(year, month - 1).toLocaleString('default', { month: 'short' })}
-                  </span>
-                  {weeks.map(({ week }) => {
-                    const weekPath = `/${chainId.toLowerCase()}/news/${year}/${month}/${week}`;
-                    const isActive = pathname === weekPath;
-                    return (
-                      <Button
-                        key={week}
-                        variant="ghost"
-                        size="sm"
-                        className={cn(
-                          "h-6 w-16 p-0 text-xs hover:bg-accent",
-                          isActive && "bg-primary/10 text-primary"
-                        )}
-                        onClick={() => navigateToWeek(year, month, week)}
-                      >
-                        {getWeekDates(year, month, week)}
-                      </Button>
-                    );
-                  })}
-                </div>
-              ))}
+              {months.map(({ month, weeks }) => {
+                const yearMonth = `${year}-${month}`;
+                const isExpanded = expandedMonth === yearMonth;
+                const weekPath = `/${chainId.toLowerCase()}/news/${year}/${month}/${weeks[0]?.week}`;
+                const isCurrentMonth = pathname.startsWith(weekPath);
+                
+                return (
+                  <div key={month} className="flex flex-col items-center space-y-1">
+                    <button
+                      onClick={() => toggleMonth(yearMonth)}
+                      className={cn(
+                        "text-xs text-muted-foreground hover:text-primary transition-colors",
+                        (isExpanded || isCurrentMonth) && "text-primary"
+                      )}
+                    >
+                      {new Date(year, month - 1).toLocaleString('default', { month: 'short' })}
+                    </button>
+                    {(isExpanded || isCurrentMonth) && (
+                      <div className="flex flex-col items-center space-y-1 mt-1">
+                        {weeks.map(({ week }) => {
+                          const weekPath = `/${chainId.toLowerCase()}/news/${year}/${month}/${week}`;
+                          const isActive = pathname === weekPath;
+                          return (
+                            <Button
+                              key={week}
+                              variant="ghost"
+                              size="sm"
+                              className={cn(
+                                "h-6 w-16 p-0 text-xs hover:bg-accent",
+                                isActive && "bg-primary/10 text-primary"
+                              )}
+                              onClick={() => navigateToWeek(year, month, week)}
+                            >
+                              {getWeekDates(year, month, week)}
+                            </Button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           ))}
         </div>
