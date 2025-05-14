@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { memo } from "react";
 import { ChainType, getChainInfo } from "@/lib/chain-utils";
 import { useChain } from "@/app/context/chain-context";
 
@@ -8,26 +8,27 @@ interface FullPageLoaderProps {
   title?: string;
   subtitle?: string;
   chain?: ChainType;
+  isLoading?: boolean;
 }
 
 const FullPageLoader = ({
   title,
   subtitle = "Loading the latest blockchain news...",
   chain: propChain,
+  isLoading = true,
 }: FullPageLoaderProps) => {
-  // Use the chain context, but allow prop override
   const { chainInfo } = useChain();
 
-  // Get chain info based on prop chain or from context
   const { name, color, IconComponent } = propChain
     ? getChainInfo(propChain)
     : chainInfo;
 
-  // If title is not provided, use "Latest Block"
   const displayTitle = title || "Latest Block";
 
+  if (!isLoading) return null;
+
   return (
-    <div className="fixed inset-0 bg-background flex flex-col items-center justify-center z-50">
+    <div className="fixed inset-0 bg-background flex flex-col items-center justify-center z-[1000]">
       <div className="flex flex-col items-center justify-center gap-6 px-4">
         <div className="relative">
           {/* Outer glow effect */}
@@ -61,4 +62,4 @@ const FullPageLoader = ({
   );
 };
 
-export default FullPageLoader;
+export default memo(FullPageLoader);
