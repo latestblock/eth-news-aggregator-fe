@@ -1,5 +1,6 @@
 import { NewsItem as PrismaNewsItem, Category } from "@prisma/client";
 import { NewsItem } from "../types";
+import { ETHEREUM_NEWS_CATEGORIES } from "../config/categories";
 
 type NewsItemWithCategory = PrismaNewsItem & {
   Category?: Category | null;
@@ -42,19 +43,34 @@ export function mapPrismaNewsItemsToComponentNewsItems(
 }
 
 /**
- * Groups news items by their category
+ * Groups news items by their category and sorts them according to the defined order
  */
 export function groupByCategory(newsItems: NewsItem[]) {
   const groupedItems: Record<string, NewsItem[]> = {};
 
+  // Initialize all categories with empty arrays
+  ETHEREUM_NEWS_CATEGORIES.forEach((category) => {
+    groupedItems[category] = [];
+  });
+
+  // Add "Uncategorized" category
+  groupedItems["Uncategorized"] = [];
+
+  // Group items by category
   newsItems.forEach((item) => {
     const categoryName = item.category || "Uncategorized";
-
-    if (!groupedItems[categoryName]) {
-      groupedItems[categoryName] = [];
+    if (groupedItems[categoryName]) {
+      groupedItems[categoryName].push(item);
+    } else {
+      groupedItems["Uncategorized"].push(item);
     }
+  });
 
-    groupedItems[categoryName].push(item);
+  // Remove empty categories
+  Object.keys(groupedItems).forEach((category) => {
+    if (groupedItems[category].length === 0) {
+      delete groupedItems[category];
+    }
   });
 
   return groupedItems;

@@ -1,0 +1,27 @@
+export const ETHEREUM_NEWS_CATEGORIES = [
+  "Protocol Upgrades",
+  "Layer 1 Updates",
+  "Layer 2 and Scaling Solutions",
+  "EIPs and Standards",
+  "Research & Development",
+  "Client Releases & Updates",
+  "Decentralization & Network Health",
+  "Staking & Validator Tools",
+  "Security & Audits",
+  "Ecosystem & Dapp Development",
+  "Regulation & Compliance",
+  "Gas Fees & Economic Updates",
+  "MEV & Consensus",
+  "Infrastructure & Tools",
+  "Validator",
+  "Network Performance",
+  "Testnets",
+  "Developer Tools & SDKs",
+  "Onchain Stats & Metrics",
+  "Innovation & Future Protocols",
+  "Community & Governance",
+  "Enterprise & Partnerships",
+  "Other",
+] as const;
+
+export type EthereumNewsCategory = typeof ETHEREUM_NEWS_CATEGORIES[number]; 
