@@ -13,6 +13,9 @@ import { getDefaultChain } from "@/app/utils/chainUtils";
 import { chainOptions } from "@/app/components/chain-icons";
 import { Metadata } from "next";
 import { generateMetadata as generatePageMetadata } from "@/app/utils/generate-metadata";
+import FullPageLoader from "@/components/ui/full-page-loader";
+import { NewsLoader } from "@/app/components/news-loader";
+import { ErrorDisplay } from "@/app/components/error-display";
 
 type Props = {
   params: { chain: string; year: string; month: string; week: string };
@@ -77,16 +80,40 @@ export default async function ChainNewsPage({ params }: Props) {
   const { startDay, endDay } = getDateRangeForWeek(year, month, week);
 
   // Fetch data in parallel
-  const [newsItems, newsGroups] = await Promise.all([
-    fetchNewsItemsForWeek(startDay, endDay, chain),
-    fetchAvailableDateRanges(chain),
-  ]);
+  let newsItems: any[] = [];
+  let newsGroups: any[] = [];
+  let error: { message: string; statusCode?: number } | undefined = undefined;
+
+  try {
+    [newsItems, newsGroups] = await Promise.all([
+      fetchNewsItemsForWeek(startDay, endDay, chain),
+      fetchAvailableDateRanges(chain),
+    ]);
+
+    // Check if we have no data, which could be a 404 scenario
+    if (!newsItems || newsItems.length === 0) {
+      error = {
+        message:
+          "No news found for this week. Please try a different time period.",
+        statusCode: 404,
+      };
+    }
+  } catch (err) {
+    console.error("Error fetching news data:", err);
+    error = {
+      message: "Failed to load news. Please try again later.",
+      statusCode: 500,
+    };
+  }
 
   const groupedItems = groupByCategory(newsItems);
   const dateRangeTitle = formatDateRange(startDay, endDay);
 
   return (
     <>
+      {/* client component that will set isLoading to false once newsItems are loaded or on error */}
+      <NewsLoader newsItems={newsItems} error={error} />
+
       {/* Mobile sidebar controller (includes toggle button in navbar) */}
       <MobileSidebarController newsGroups={newsGroups} chainId={chain} />
 
@@ -97,13 +124,20 @@ export default async function ChainNewsPage({ params }: Props) {
           <Sidebar newsGroups={newsGroups} chainId={chain} />
         </div>
 
-        {/* Weekly news content */}
+        {/* Weekly news content or error display */}
         <div className="flex-grow w-full min-[981px]:w-[calc(100%-280px)] lg:w-[calc(100%-300px)] max-w-4xl">
-          <WeeklyNewsContent
-            dateRangeTitle={dateRangeTitle}
-            groupedItems={groupedItems}
-            chainName={chain}
-          />
+          {error ? (
+            <ErrorDisplay
+              message={error.message}
+              statusCode={error.statusCode}
+            />
+          ) : (
+            <WeeklyNewsContent
+              dateRangeTitle={dateRangeTitle}
+              groupedItems={groupedItems}
+              chainName={chain}
+            />
+          )}
         </div>
       </div>
     </>

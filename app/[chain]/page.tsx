@@ -10,6 +10,7 @@ import {
   getMostRecentReleaseDay,
   getDateRangeForWeek,
 } from "@/app/utils/dateUtils";
+import FullPageLoader from "@/components/ui/full-page-loader";
 
 type Props = {
   params: { chain?: string };
