@@ -8,11 +8,12 @@ import {
   fetchNewsItemsForWeek,
 } from "@/app/actions/news.actions";
 import { groupByCategory } from "@/app/utils/newsUtils";
-import { Chain } from "@/app/types";
+import { Chain, NewsItem, NewsGroup } from "@/app/types";
 import { getDefaultChain } from "@/app/utils/chainUtils";
 import { chainOptions } from "@/app/components/chain-icons";
 import { Metadata } from "next";
 import { generateMetadata as generatePageMetadata } from "@/app/utils/generate-metadata";
+import { NewsLoader } from "@/app/components/news-loader";
 
 type Props = {
   params: { chain: string; year: string; month: string; week: string };
@@ -22,6 +23,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const year = parseInt(params.year);
   const month = parseInt(params.month) - 1;
   const week = parseInt(params.week);
+
+  let error: { message: string; statusCode?: number } | undefined = undefined;
 
   // Validate chain parameter
   const chainParam = params.chain.toUpperCase();
@@ -77,17 +80,39 @@ export default async function ChainNewsPage({ params }: Props) {
   const startDay = new Date(year, month, (week - 1) * 7 + 1);
   const endDay = new Date(year, month, week * 7);
 
-  // Fetch data in parallel
-  const [newsItems, newsGroups] = await Promise.all([
-    fetchNewsItemsForWeek(startDay, endDay, chain),
-    fetchAvailableDateRanges(chain),
-  ]);
+  let newsItems: NewsItem[] = [];
+  let newsGroups: NewsGroup[] = [];
+  let error: { message: string; statusCode?: number } | undefined = undefined;
+
+  try {
+    [newsItems, newsGroups] = await Promise.all([
+      fetchNewsItemsForWeek(startDay, endDay, chain),
+      fetchAvailableDateRanges(chain),
+    ]);
+
+    if (!newsItems || newsItems.length === 0) {
+      error = {
+        message:
+          "No news found for this week. Please try a different time period.",
+        statusCode: 404,
+      };
+    }
+  } catch (err) {
+    console.error("Error fetching news data:", err);
+    error = {
+      message: "Failed to load news. Please try again later.",
+      statusCode: 500,
+    };
+  }
 
   const groupedItems = groupByCategory(newsItems);
   const dateRangeTitle = formatDateRange(startDay, endDay);
 
   return (
     <>
+      {/* client component that will set isLoading to false once newsItems are loaded or on error */}
+      <NewsLoader newsItems={newsItems} error={error} />
+
       {/* Mobile sidebar controller (includes toggle button in navbar) */}
       <MobileSidebarController newsGroups={newsGroups} chainId={chain} />
 
