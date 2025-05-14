@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { memo } from "react";
 import { ChainType, getChainInfo } from "@/lib/chain-utils";
 import { useChain } from "@/app/context/chain-context";
 
@@ -25,11 +25,10 @@ const FullPageLoader = ({
 
   const displayTitle = title || "Latest Block";
 
-  // If isLoading is false, don't render anything
   if (!isLoading) return null;
 
   return (
-    <div className="fixed inset-0 bg-background flex flex-col items-center justify-center z-50">
+    <div className="fixed inset-0 bg-background flex flex-col items-center justify-center z-[1000]">
       <div className="flex flex-col items-center justify-center gap-6 px-4">
         <div className="relative">
           {/* Outer glow effect */}
@@ -63,4 +62,4 @@ const FullPageLoader = ({
   );
 };
 
-export default FullPageLoader;
+export default memo(FullPageLoader);

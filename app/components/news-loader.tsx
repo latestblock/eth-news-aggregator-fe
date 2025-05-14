@@ -1,24 +1,26 @@
 "use client";
 
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { useLoading } from "@/app/context/loading-context";
-import { NewsItem } from "@/app/types";
 
 interface NewsLoaderProps {
   newsItems: any;
+  error?: {
+    message: string;
+    statusCode?: number;
+  };
 }
 
-export function NewsLoader({ newsItems }: NewsLoaderProps) {
+export const NewsLoaderComponent = ({ newsItems, error }: NewsLoaderProps) => {
   const { setIsLoading } = useLoading();
-  console.log("newsItems: ", newsItems);
 
   useEffect(() => {
-    // Set loading to false if news items exist
-    if (newsItems && newsItems.length > 0) {
+    if ((newsItems && newsItems.length > 0) || error) {
       setIsLoading(false);
     }
-  }, [newsItems, setIsLoading]);
+  }, [newsItems, error, setIsLoading]);
 
-  // This component doesn't render anything
   return null;
-}
+};
+
+export const NewsLoader = memo(NewsLoaderComponent);

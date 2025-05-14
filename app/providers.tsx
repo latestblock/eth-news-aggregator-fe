@@ -15,6 +15,7 @@ interface ProvidersProps {
 function LoadingWrapper({ children }: { children: ReactNode }) {
   const { isLoading } = useLoading();
 
+  //* can't show it conditionally because news needs to be loaded first in children
   return (
     <>
       <FullPageLoader isLoading={isLoading} />

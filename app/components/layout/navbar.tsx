@@ -50,7 +50,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <header className="fixed top-0 z-50 inset-x-0">
+    <header className="fixed top-0 z-40 inset-x-0">
       <div className="mx-auto w-full max-w-screen-xl border-b border-border bg-background shadow-md">
         <div className="h-16 flex items-center justify-between px-3 sm:px-6">
           <div className="flex items-center">
