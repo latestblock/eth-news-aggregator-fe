@@ -8,6 +8,7 @@ import { generateMetadata as generatePageMetadata } from "@/app/utils/generate-m
 import {
   getWeekNumberInMonth,
   getMostRecentReleaseDay,
+  getDateRangeForWeek,
 } from "@/app/utils/dateUtils";
 
 type Props = {
@@ -81,5 +82,49 @@ export default async function ChainHomePage({ params }: Props) {
   const month = lastReleaseDay.getMonth() + 1; // Convert to 1-indexed month
   const week = getWeekNumberInMonth(lastReleaseDay);
 
+  // Check if the selected week has any news items
+  const { startDay, endDay } = getDateRangeForWeek(year, month, week);
+
+  const newsItems = await prisma.newsItem.findFirst({
+    where: {
+      date: {
+        gte: startDay,
+        lte: endDay,
+      },
+      status: "APPROVED",
+      chain: chain as any,
+    },
+  });
+
+  // If there are no news items for the current week, find the first week with news
+  if (!newsItems) {
+    // Get all news items ordered by date descending to find the most recent with content
+    const recentNewsItem = await prisma.newsItem.findFirst({
+      where: {
+        status: "APPROVED",
+        date: {
+          not: null,
+        },
+        chain: chain as any,
+      },
+      orderBy: {
+        date: "desc",
+      },
+    });
+
+    if (recentNewsItem && recentNewsItem.date) {
+      const recentDate = new Date(recentNewsItem.date);
+      const recentYear = recentDate.getFullYear();
+      const recentMonth = recentDate.getMonth() + 1; // Convert to 1-indexed month
+      const recentWeek = getWeekNumberInMonth(recentDate);
+
+      // Redirect to the week that contains the most recent news item
+      redirect(
+        `/${chain.toLowerCase()}/news/${recentYear}/${recentMonth}/${recentWeek}`
+      );
+    }
+  }
+
+  // Default redirection if we didn't find a better week
   redirect(`/${chain.toLowerCase()}/news/${year}/${month}/${week}`);
 }
