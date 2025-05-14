@@ -8,23 +8,25 @@ interface FullPageLoaderProps {
   title?: string;
   subtitle?: string;
   chain?: ChainType;
+  isLoading?: boolean;
 }
 
 const FullPageLoader = ({
   title,
   subtitle = "Loading the latest blockchain news...",
   chain: propChain,
+  isLoading = true,
 }: FullPageLoaderProps) => {
-  // Use the chain context, but allow prop override
   const { chainInfo } = useChain();
 
-  // Get chain info based on prop chain or from context
   const { name, color, IconComponent } = propChain
     ? getChainInfo(propChain)
     : chainInfo;
 
-  // If title is not provided, use "Latest Block"
   const displayTitle = title || "Latest Block";
+
+  // If isLoading is false, don't render anything
+  if (!isLoading) return null;
 
   return (
     <div className="fixed inset-0 bg-background flex flex-col items-center justify-center z-50">

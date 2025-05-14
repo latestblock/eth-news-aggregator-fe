@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getDefaultChainRoute } from "./utils/chainUtils";
 import { Metadata } from "next";
 import { generateMetadata } from "./utils/generate-metadata";
-
+import FullPageLoader from "@/components/ui/full-page-loader";
 export const metadata: Metadata = generateMetadata({
   title: "Home",
   description:
@@ -11,7 +11,12 @@ export const metadata: Metadata = generateMetadata({
 
 export default async function Home() {
   const defaultChain = getDefaultChainRoute();
-  redirect(`/${defaultChain}`);
+
+  if (defaultChain) {
+    redirect(`/${defaultChain}`);
+  }
+
+  return <FullPageLoader isLoading />;
 }
 
 // todo: remove console logs

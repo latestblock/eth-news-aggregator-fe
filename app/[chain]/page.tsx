@@ -9,6 +9,7 @@ import {
   getWeekNumberInMonth,
   getMostRecentReleaseDay,
 } from "@/app/utils/dateUtils";
+import FullPageLoader from "@/components/ui/full-page-loader";
 
 type Props = {
   params: { chain?: string };
@@ -81,5 +82,9 @@ export default async function ChainHomePage({ params }: Props) {
   const month = lastReleaseDay.getMonth() + 1; // Convert to 1-indexed month
   const week = getWeekNumberInMonth(lastReleaseDay);
 
-  redirect(`/${chain.toLowerCase()}/news/${year}/${month}/${week}`);
+  if (chain && year && month && week) {
+    redirect(`/${chain.toLowerCase()}/news/${year}/${month}/${week}`);
+  }
+
+  return <FullPageLoader isLoading />;
 }

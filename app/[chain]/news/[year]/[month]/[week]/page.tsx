@@ -13,6 +13,8 @@ import { getDefaultChain } from "@/app/utils/chainUtils";
 import { chainOptions } from "@/app/components/chain-icons";
 import { Metadata } from "next";
 import { generateMetadata as generatePageMetadata } from "@/app/utils/generate-metadata";
+import FullPageLoader from "@/components/ui/full-page-loader";
+import { NewsLoader } from "@/app/components/news-loader";
 
 type Props = {
   params: { chain: string; year: string; month: string; week: string };
@@ -87,6 +89,9 @@ export default async function ChainNewsPage({ params }: Props) {
 
   return (
     <>
+      {/* Client component that will set isLoading to false once mounted */}
+      <NewsLoader newsItems={newsItems} />
+
       {/* Mobile sidebar controller (includes toggle button in navbar) */}
       <MobileSidebarController newsGroups={newsGroups} chainId={chain} />
 
