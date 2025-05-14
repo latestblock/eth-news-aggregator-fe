@@ -18,19 +18,19 @@ export function Sidebar({
 }: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const [expandedMonth, setExpandedMonth] = useState<string | null>(null);
+  const [expandedYear, setExpandedYear] = useState<number | null>(null);
 
   useEffect(() => {
-    // Extract current year and month from pathname
+    // Extract current year from pathname
     const match = pathname.match(/\/(\d+)\/(\d+)\/(\d+)$/);
     if (match) {
-      const [, year, month] = match;
-      setExpandedMonth(`${year}-${month}`);
+      const [, year] = match;
+      setExpandedYear(parseInt(year));
     }
   }, [pathname]);
 
-  const toggleMonth = (yearMonth: string) => {
-    setExpandedMonth(prev => prev === yearMonth ? null : yearMonth);
+  const toggleYear = (year: number) => {
+    setExpandedYear(current => current === year ? null : year);
   };
 
   const navigateToWeek = (year: number, month: number, week: number) => {
@@ -40,75 +40,55 @@ export function Sidebar({
 
   const getWeekDates = (year: number, month: number, week: number) => {
     const startDay = new Date(year, month - 1, (week - 1) * 7 + 1);
-    const endDay = new Date(year, month - 1, week * 7);
-    
-    // Handle edge case where week extends to next month
-    if (endDay.getMonth() !== month - 1) {
-      endDay.setDate(0); // Last day of the month
-    }
-
-    const startDate = startDay.getDate().toString().padStart(2, '0');
-    const endDate = endDay.getDate().toString().padStart(2, '0');
-    const startMonth = startDay.toLocaleString('default', { month: 'short' });
-    const endMonth = endDay.toLocaleString('default', { month: 'short' });
-
-    if (startMonth === endMonth) {
-      return `${startDate}-${endDate}`;
-    }
-    return `${startDate}-${endDate}`;
+    return startDay.toLocaleString('default', { month: 'short', day: 'numeric' });
   };
 
   return (
     <div className="w-24 h-full rounded-xl bg-light-panel">
       <ScrollArea className="h-[calc(100vh-6rem)]">
         <div className="flex flex-col items-center py-3 space-y-4">
-          {newsGroups.map(({ year, months }) => (
-            <div key={year} className="flex flex-col items-center space-y-2">
-              <span className="text-sm font-semibold text-muted-foreground">{year}</span>
-              {months.map(({ month, weeks }) => {
-                const yearMonth = `${year}-${month}`;
-                const isExpanded = expandedMonth === yearMonth;
-                const weekPath = `/${chainId.toLowerCase()}/news/${year}/${month}/${weeks[0]?.week}`;
-                const isCurrentMonth = pathname.startsWith(weekPath);
-                
-                return (
-                  <div key={month} className="flex flex-col items-center space-y-1">
-                    <button
-                      onClick={() => toggleMonth(yearMonth)}
-                      className={cn(
-                        "text-xs text-muted-foreground hover:text-primary transition-colors",
-                        (isExpanded || isCurrentMonth) && "text-primary"
-                      )}
-                    >
-                      {new Date(year, month - 1).toLocaleString('default', { month: 'short' })}
-                    </button>
-                    {(isExpanded || isCurrentMonth) && (
-                      <div className="flex flex-col items-center space-y-1 mt-1">
-                        {weeks.map(({ week }) => {
-                          const weekPath = `/${chainId.toLowerCase()}/news/${year}/${month}/${week}`;
-                          const isActive = pathname === weekPath;
-                          return (
-                            <Button
-                              key={week}
-                              variant="ghost"
-                              size="sm"
-                              className={cn(
-                                "h-6 w-16 p-0 text-xs hover:bg-accent",
-                                isActive && "bg-primary/10 text-primary"
-                              )}
-                              onClick={() => navigateToWeek(year, month, week)}
-                            >
-                              {getWeekDates(year, month, week)}
-                            </Button>
-                          );
-                        })}
-                      </div>
+          {newsGroups.map(({ year, months }) => {
+            const isExpanded = expandedYear === year;
+            const isCurrentYear = pathname.includes(`/${year}/`);
+            
+            return (
+              <div key={year} className="flex flex-col items-center space-y-2">
+                <button
+                  onClick={() => toggleYear(year)}
+                  className={cn(
+                    "text-sm font-semibold text-muted-foreground hover:text-primary transition-colors",
+                    (isExpanded || isCurrentYear) && "text-primary"
+                  )}
+                >
+                  {year}
+                </button>
+                {(isExpanded || isCurrentYear) && (
+                  <div className="flex flex-col items-center space-y-1">
+                    {months.flatMap(({ month, weeks }) =>
+                      weeks.map(({ week }) => {
+                        const weekPath = `/${chainId.toLowerCase()}/news/${year}/${month}/${week}`;
+                        const isActive = pathname === weekPath;
+                        return (
+                          <Button
+                            key={`${month}-${week}`}
+                            variant="ghost"
+                            size="sm"
+                            className={cn(
+                              "h-6 w-16 p-0 text-xs hover:bg-accent",
+                              isActive && "bg-primary/10 text-primary"
+                            )}
+                            onClick={() => navigateToWeek(year, month, week)}
+                          >
+                            {getWeekDates(year, month, week)}
+                          </Button>
+                        );
+                      })
                     )}
                   </div>
-                );
-              })}
-            </div>
-          ))}
+                )}
+              </div>
+            );
+          })}
         </div>
       </ScrollArea>
     </div>
