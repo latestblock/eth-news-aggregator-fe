@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${formattedChainName} News: ${dateRangeTitle}`;
   const description = `${formattedChainName} blockchain news and updates for the week of ${dateRangeTitle}. Stay informed with the latest developments.`;
 
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://latestblock.net";
   const ogImageUrl = `${baseUrl}/api/og?chain=${chain}&title=${encodeURIComponent(
     title
   )}&description=${encodeURIComponent(description)}`;
