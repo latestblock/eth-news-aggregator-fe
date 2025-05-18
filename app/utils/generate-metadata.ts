@@ -44,6 +44,7 @@ export function generateMetadata({
       ],
       type: "website",
       siteName: siteConfig.name,
+      locale: siteConfig.locale,
     },
     twitter: {
       card: "summary_large_image",
@@ -53,6 +54,9 @@ export function generateMetadata({
     },
     alternates: {
       canonical: `${baseUrl}`,
+    },
+    other: {
+      "og:logo": `${baseUrl}${siteConfig.logo}`,
     },
     ...(noIndex && {
       robots: {

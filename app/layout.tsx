@@ -52,6 +52,10 @@ export const metadata: Metadata = {
   },
   icons: siteConfig.icons,
   manifest: siteConfig.manifest,
+  other: {
+    "og:locale": "en_US",
+    "og:logo": `${siteConfig.url}${siteConfig.logo}`,
+  },
 };
 
 export default function RootLayout({
