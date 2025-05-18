@@ -19,12 +19,25 @@ export function generateMetadata({
 }: GenerateMetadataProps): Metadata {
   const metaTitle = title ? title : siteConfig.name;
   const metaDescription = description || siteConfig.description;
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+  // Use siteConfig.url as fallback and ensure trailing slash
+  const baseUrl = (
+    process.env.NEXT_PUBLIC_APP_URL ||
+    siteConfig.url ||
+    "https://latestblock.net"
+  ).endsWith("/")
+    ? process.env.NEXT_PUBLIC_APP_URL ||
+      siteConfig.url ||
+      "https://latestblock.net"
+    : `${
+        process.env.NEXT_PUBLIC_APP_URL ||
+        siteConfig.url ||
+        "https://latestblock.net"
+      }/`;
 
   // Generate dynamic OG image URL using our API
   const dynamicOgImage =
     image ||
-    `${baseUrl}/api/og?chain=${chain}&title=${encodeURIComponent(
+    `${baseUrl}api/og?chain=${chain}&title=${encodeURIComponent(
       metaTitle
     )}&description=${encodeURIComponent(metaDescription)}`;
 
@@ -34,6 +47,7 @@ export function generateMetadata({
     openGraph: {
       title: metaTitle,
       description: metaDescription,
+      url: baseUrl,
       images: [
         {
           url: dynamicOgImage,
@@ -53,10 +67,14 @@ export function generateMetadata({
       images: [dynamicOgImage],
     },
     alternates: {
-      canonical: `${baseUrl}`,
+      canonical: baseUrl,
     },
     other: {
-      "og:logo": `${baseUrl}${siteConfig.logo}`,
+      "og:logo": `${baseUrl}${
+        siteConfig.logo.startsWith("/")
+          ? siteConfig.logo.slice(1)
+          : siteConfig.logo
+      }`,
     },
     ...(noIndex && {
       robots: {

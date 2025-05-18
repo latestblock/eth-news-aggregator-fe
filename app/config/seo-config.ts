@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Latest Block",
-  url: process.env.NEXT_PUBLIC_APP_URL,
+  url: process.env.NEXT_PUBLIC_APP_URL || "https://latestblock.net",
   //   ogImage: "/og-images/default.png",
   description:
     "Stay updated with the latest Ethereum news aggregated from trusted sources across the web.",
@@ -11,7 +11,7 @@ export const siteConfig = {
   authors: [
     {
       name: "Latest Block Team",
-      url: process.env.NEXT_PUBLIC_APP_URL,
+      url: process.env.NEXT_PUBLIC_APP_URL || "https://latestblock.net",
     },
   ],
   creator: "Latest Block Team",

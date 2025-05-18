@@ -10,6 +10,11 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+// Ensure URL has trailing slash
+const baseUrl = siteConfig.url.endsWith("/")
+  ? siteConfig.url
+  : `${siteConfig.url}/`;
+
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -22,15 +27,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: siteConfig.url,
+    url: baseUrl,
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
     images: [
       {
-        url: `${
-          siteConfig.url
-        }/api/og?chain=ETHEREUM&title=${encodeURIComponent(
+        url: `${baseUrl}api/og?chain=ETHEREUM&title=${encodeURIComponent(
           siteConfig.name
         )}&description=${encodeURIComponent(siteConfig.description)}`,
         width: 1200,
@@ -44,7 +47,7 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [
-      `${siteConfig.url}/api/og?chain=ETHEREUM&title=${encodeURIComponent(
+      `${baseUrl}api/og?chain=ETHEREUM&title=${encodeURIComponent(
         siteConfig.name
       )}&description=${encodeURIComponent(siteConfig.description)}`,
     ],
@@ -54,7 +57,11 @@ export const metadata: Metadata = {
   manifest: siteConfig.manifest,
   other: {
     "og:locale": "en_US",
-    "og:logo": `${siteConfig.url}${siteConfig.logo}`,
+    "og:logo": `${baseUrl}${
+      siteConfig.logo.startsWith("/")
+        ? siteConfig.logo.slice(1)
+        : siteConfig.logo
+    }`,
   },
 };
 
