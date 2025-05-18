@@ -21,10 +21,12 @@ export const siteConfig = {
   },
   icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
   },
-  manifest: `${process.env.NEXT_PUBLIC_APP_URL}/site.webmanifest`,
+  manifest: "/site.webmanifest",
+  locale: "en_US",
+  logo: "/favicon-32x32.png",
 };
 
 export const seoConfig = {
@@ -33,7 +35,7 @@ export const seoConfig = {
   defaultDescription: siteConfig.description,
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: siteConfig.locale,
     url: siteConfig.url,
     siteName: siteConfig.name,
     title: siteConfig.name,
@@ -80,6 +82,14 @@ export const seoConfig = {
     {
       property: "og:image:type",
       content: "image/png",
+    },
+    {
+      property: "og:locale",
+      content: siteConfig.locale,
+    },
+    {
+      property: "og:logo",
+      content: `${siteConfig.url}${siteConfig.logo}`,
     },
   ],
 };
