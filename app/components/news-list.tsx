@@ -14,6 +14,7 @@ import { Card } from "@/components/ui/card";
 import { NewsItem } from "../types";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { ETHEREUM_CATEGORY_ICONS } from "../utils/categoryUtils";
 
 interface NewsListProps {
   items: NewsItem[];
@@ -33,7 +34,19 @@ export function NewsList({ items, category }: NewsListProps) {
         }, 100);
       }
     }
-  }, []);
+
+    // Log thread tweets
+    if (category) {
+      const categoryEmoji = ETHEREUM_CATEGORY_ICONS[category as keyof typeof ETHEREUM_CATEGORY_ICONS];
+      const tweets = items.map((item, index) => {
+        const categorySlug = category.toLowerCase().replace(/\s+/g, '-');
+        const url = `${window.location.origin}${window.location.pathname}#${categorySlug}-${index + 1}`;
+        return `${item.headline}\n${url}`;
+      }).join('\n\n');
+
+      console.log(`\n${categoryEmoji} ${category}\n\n${tweets}\n`);
+    }
+  }, [items, category]);
 
   const copyNewsLink = (item: NewsItem, index: number) => {
     const categorySlug = category?.toLowerCase().replace(/\s+/g, '-') || 'news';
@@ -115,7 +128,7 @@ export function NewsList({ items, category }: NewsListProps) {
     <div className="bg-light-panel px-3 sm:px-4 md:px-6 py-4 md:py-8">
       <Toaster />
       <div className="mx-auto max-w-4xl" style={{ width: "100%" }}>
-        <div className="mb-4 md:mb-6 flex items-center justify-between">
+        {/* <div className="mb-4 md:mb-6 flex items-center justify-between">
           <div className="flex items-center">
             <Calendar className="mr-2 h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
             <p className="text-xs md:text-sm text-muted-foreground">
@@ -162,7 +175,7 @@ export function NewsList({ items, category }: NewsListProps) {
               </span>
             </Button>
           </div>
-        </div>
+        </div> */}
 
         <div className="grid gap-4 md:gap-6">
           {items.map((item, index) => {

@@ -8,6 +8,7 @@ import ChainSelector from "../chain-selector";
 import ThemeToggle from "@/components/ui/theme-toggle";
 import { Chain } from "@/app/types";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -67,9 +68,11 @@ const Navbar = () => {
                 <Menu className="h-4 w-4" />
               )}
             </Button>
-            <h1 className="text-lg sm:text-xl md:text-2xl text-gradient font-semibold tracking-wide">
-              Latest Block
-            </h1>
+            <Link href="/" className="hover:opacity-80 transition-opacity">
+              <h1 className="text-lg sm:text-xl md:text-2xl text-gradient font-semibold tracking-wide">
+                Latest Block
+              </h1>
+            </Link>
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
             {/* <ChainloSelector chains={chainOptions} currentChain={currentChain} /> */}
