@@ -43,6 +43,22 @@ export function Sidebar({
     return startDay.toLocaleString('default', { month: 'short', day: 'numeric' });
   };
 
+  const getTuesdayOfWeek = (year: number, month: number, week: number) => {
+    // Start from the first day of the month
+    const firstDayOfMonth = new Date(year, month - 1, 1);
+    const firstDayWeekday = firstDayOfMonth.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  
+    // Calculate how many days to add to get to the first Tuesday
+    const daysToFirstTuesday = (2 - firstDayWeekday + 7) % 7;
+  
+    // Calculate the date of the Tuesday in the desired week
+    const tuesdayDate = 1 + daysToFirstTuesday + (week - 1) * 7;
+  
+    const tuesday = new Date(year, month - 1, tuesdayDate);
+    return tuesday.toLocaleString('default', { month: 'short', day: 'numeric' });
+  };
+  
+
   return (
     <div className="w-24 h-full rounded-xl bg-light-panel">
       <ScrollArea className="h-[calc(100vh-6rem)]">
@@ -79,7 +95,7 @@ export function Sidebar({
                             )}
                             onClick={() => navigateToWeek(year, month, week)}
                           >
-                            {getWeekDates(year, month, week)}
+                            {getTuesdayOfWeek(year, month, week)}
                           </Button>
                         );
                       })
